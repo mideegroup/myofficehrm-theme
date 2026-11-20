@@ -19,6 +19,14 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
+export const h2Class = "text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl md:text-[2.75rem]";
+
+const toneClass = {
+  default: "",
+  surface: "border-y border-border bg-surface",
+  inverse: "bg-primary text-primary-foreground",
+};
+
 export function Section({
   id,
   children,
@@ -27,26 +35,25 @@ export function Section({
 }: {
   id?: string;
   children: ReactNode;
-  tone?: "default" | "surface";
+  tone?: keyof typeof toneClass;
   className?: string;
 }) {
-  const toneCls = tone === "surface" ? "border-y border-border bg-surface" : "";
   return (
-    <section id={id} className={`scroll-mt-14 py-20 md:py-28 ${toneCls} ${className}`}>
+    <section id={id} className={`scroll-mt-14 py-24 md:py-32 ${toneClass[tone]} ${className}`}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">{children}</div>
     </section>
   );
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="mb-3 text-sm font-medium text-accent">{children}</p>;
+  return <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent">{children}</p>;
 }
 
 export function SectionHead({ eyebrow, title, sub }: { eyebrow?: string; title: string; sub?: string }) {
   return (
-    <div className="mb-12 max-w-2xl md:mb-16">
+    <div className="mb-14 max-w-2xl md:mb-20">
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{title}</h2>
+      <h2 className={h2Class}>{title}</h2>
       {sub && <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted md:text-lg">{sub}</p>}
     </div>
   );
