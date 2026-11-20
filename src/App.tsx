@@ -7,8 +7,14 @@ import Demo from "./pages/Demo";
 function ScrollManager() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
-    else window.scrollTo(0, 0);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (hash) {
+      requestAnimationFrame(() => {
+        document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "instant" });
+    }
   }, [pathname, hash]);
   return null;
 }

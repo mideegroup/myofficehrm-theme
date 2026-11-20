@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, Star, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { LogoWordmark } from "./Logo";
 import { Button } from "./Button";
 import { GithubIcon } from "./Icons";
@@ -25,10 +25,6 @@ function StarBadge() {
     >
       <GithubIcon />
       GitHub
-      <span className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs text-text">
-        <Star className="size-3 fill-warning text-warning" aria-hidden="true" />
-        1.2k
-      </span>
     </a>
   );
 }

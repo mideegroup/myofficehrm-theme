@@ -6,17 +6,17 @@ import {
 } from "lucide-react";
 import { Eyebrow, h2Class, IconTile, Section, SectionHead } from "../components/Layout";
 import { Button } from "../components/Button";
-import { GithubIcon } from "../components/Icons";
 import { DashboardMock } from "../components/DashboardMock";
 import {
-  ApprovalFlowCard, FieldBuilderCard, LeaveRequestCard, PayrollRunCard, SelfServicePhone,
+  ApprovalFlowCard, EmployeeMiniCard, FieldBuilderCard, LeaveRequestCard, PayrollRunCard, SelfServicePhone, TodayStrip,
 } from "../components/ProductScenes";
-import { DOCS_URL, GITHUB_URL } from "../components/Nav";
+import { ConnectorLines, EmployeeFigure, HrLeadFigure, PayrollAdminFigure } from "../components/People";
+import { DOCS_URL } from "../components/Nav";
 
 const proof = [
-  { v: "1 command", d: "docker compose up -d runs the full stack on your own servers." },
-  { v: "1 database", d: "per tenant, so a missing filter cannot expose another company's payroll." },
-  { v: "AGPL-3.0", d: "for the full core. Core features are never locked behind a paid tier." },
+  { v: "Runs anywhere", d: "Your own servers, our hosted cloud, or an isolated dedicated instance." },
+  { v: "Private by design", d: "One database per organisation — payroll can't leak across tenants." },
+  { v: "Free core", d: "The full core under AGPL-3.0 — features are never locked behind a paid tier." },
 ];
 
 const modules = [
@@ -69,56 +69,79 @@ function Hero() {
   return (
     <section id="product" className="relative scroll-mt-14 overflow-hidden border-b border-border">
       <div aria-hidden="true" className="bg-dots absolute inset-0 -z-10" />
-      <div className="mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 md:pb-32 md:pt-24">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-text-muted shadow-card">
-              <span className="size-1.5 rounded-full bg-success" aria-hidden="true" />
-              Open source · AGPL-3.0 · Self-hostable
-            </p>
-            <h1 className="mt-7 text-balance text-5xl font-semibold leading-[1] tracking-[-0.04em] sm:text-6xl lg:text-[4.5rem]">
-              Configurable HR and payroll, on infrastructure you control
-            </h1>
-            <p className="mt-7 max-w-xl text-pretty text-base leading-relaxed text-text-muted sm:text-lg">
-              Model your own fields, forms and workflows without writing code. Run it on your own server or let us
-              host it, with employee and payroll data kept in a database that belongs to your organisation alone.
-            </p>
-            <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-              <Button to="/demo" size="lg">
-                Try the demo <ArrowRight className="size-4" />
-              </Button>
-              <Button href={GITHUB_URL} variant="secondary" size="lg">
-                <GithubIcon className="size-4" /> Star on GitHub
-              </Button>
-            </div>
-            <p className="mt-4 text-xs text-text-muted">The demo uses fictional data and needs no install.</p>
+      <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 md:pb-28 md:pt-24">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 py-1 text-xs font-medium text-text-muted shadow-card">
+            <span className="size-1.5 rounded-full bg-success" aria-hidden="true" />
+            HRM + Payroll in one platform
+          </p>
+          <h1 className="mt-7 text-balance text-5xl font-semibold leading-[1] tracking-[-0.04em] sm:text-6xl lg:text-[5rem]">
+            Configurable <span className="text-accent">HR</span> and <span className="text-[0.92em] font-medium text-accent-2">payroll</span>, on infrastructure you control
+          </h1>
+          <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-relaxed text-text-muted sm:text-lg">
+            Leave, attendance, payroll and employee records in one place — configured to match how your
+            organisation actually works. Self-host it or let us run it; your people data stays in a database that
+            belongs to you alone.
+          </p>
+          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <Button to="/demo" size="lg">
+              Try the demo <ArrowRight className="size-4" />
+            </Button>
+            <Button to="/#platform" variant="secondary" size="lg">
+              See the platform
+            </Button>
           </div>
-
-          <dl className="divide-y divide-border border-y border-border lg:col-span-4 lg:col-start-9 lg:border-y-0">
-            {proof.map((p) => (
-              <div key={p.v} className="py-5 lg:py-4">
-                <dt className="text-xl font-semibold tracking-tight">{p.v}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-text-muted">{p.d}</dd>
-              </div>
+          <p className="mt-4 text-xs text-text-muted">No install needed — explore a fictional company in the live demo.</p>
+          <div aria-label="Modules" className="mt-8 flex flex-wrap justify-center gap-2">
+            {modules.map(({ i: Icon, t }) => (
+              <span
+                key={t}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-accent/25 bg-accent/10 px-3 py-1.5 text-xs font-medium text-text"
+              >
+                <Icon className="size-3.5 text-accent" strokeWidth={1.75} aria-hidden="true" />
+                {t}
+              </span>
             ))}
-          </dl>
+          </div>
         </div>
 
-        <div className="relative mt-16 flex flex-col gap-6 md:mt-24 md:block">
-          <div className="relative rounded-2xl border border-border bg-surface/80 p-2 shadow-float md:ml-[10%]">
+        <div className="relative mt-14 md:mt-20">
+          <ConnectorLines className="pointer-events-none absolute inset-0 hidden lg:block" />
+          <HrLeadFigure className="absolute -left-10 top-[24%] hidden w-[150px] lg:block" />
+          <PayrollAdminFigure className="absolute -right-8 top-[42%] hidden w-[140px] lg:block" />
+          <EmployeeFigure className="absolute bottom-[-3rem] right-[15%] hidden w-[105px] xl:block" />
+          <div className="relative z-10 mx-auto max-w-3xl">
+            <TodayStrip />
+          </div>
+          <div className="relative mx-auto -mt-5 max-w-5xl rounded-2xl border border-border bg-surface/80 p-2 shadow-float">
             <DashboardMock />
             <p className="sr-only">
               Product preview: the myOfficeHRM admin dashboard with a sidebar, headcount statistics, an employee table
               and a leave approvals panel.
             </p>
           </div>
-          <div className="relative z-10 w-full max-w-[300px] md:absolute md:left-0 md:top-[34%] md:max-w-none md:w-[300px]">
-            <LeaveRequestCard />
+          <div className="absolute -left-2 top-[40%] hidden w-[300px] md:block">
+            <LeaveRequestCard compact />
           </div>
-          <div className="relative z-10 w-full max-w-[320px] md:absolute md:bottom-[-3.5rem] md:right-0 md:w-[320px] md:max-w-none">
+          <div className="absolute -right-2 top-[52%] hidden w-[320px] lg:block">
             <PayrollRunCard />
           </div>
+          <div className="absolute -bottom-12 left-[4%] hidden w-[280px] lg:block">
+            <EmployeeMiniCard />
+          </div>
+          <div className="mt-6 md:hidden">
+            <LeaveRequestCard compact />
+          </div>
         </div>
+
+        <dl className="mt-20 grid gap-8 border-t border-border pt-8 sm:grid-cols-3 md:mt-28">
+          {proof.map((p) => (
+            <div key={p.v}>
+              <dt className="text-lg font-semibold tracking-tight">{p.v}</dt>
+              <dd className="mt-1.5 text-sm leading-relaxed text-text-muted">{p.d}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
@@ -126,7 +149,7 @@ function Hero() {
 
 const chapterTone: Record<Tone, { muted: string; eyebrow: string; check: string; plate: string; rule: string }> = {
   default: { muted: "text-text-muted", eyebrow: "text-accent", check: "text-accent", plate: "bg-surface", rule: "bg-border" },
-  surface: { muted: "text-text-muted", eyebrow: "text-accent", check: "text-accent", plate: "bg-background", rule: "bg-border" },
+  surface: { muted: "text-text-muted", eyebrow: "text-accent", check: "text-accent", plate: "bg-surface-elevated", rule: "bg-border" },
   inverse: {
     muted: "text-primary-foreground/70",
     eyebrow: "text-primary-foreground/60",
@@ -194,6 +217,7 @@ function Chapters() {
           "Changes take effect without a deployment.",
         ]}
         visual={<FieldBuilderCard />}
+        tone="surface"
       />
       <Chapter
         id="leave"
@@ -207,7 +231,6 @@ function Chapters() {
           "Approvals routed through the workflow you designed.",
         ]}
         visual={<LeaveRequestCard />}
-        tone="surface"
         flip
       />
       <Chapter
@@ -236,6 +259,7 @@ function Chapters() {
           "Flows are per tenant, so one company's rules never leak into another's.",
         ]}
         visual={<ApprovalFlowCard />}
+        tone="surface"
         flip
       />
       <Chapter
@@ -254,7 +278,6 @@ function Chapters() {
             <SelfServicePhone />
           </div>
         }
-        tone="surface"
       />
     </>
   );
@@ -277,7 +300,7 @@ function PlatformPillar() {
         </div>
         <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border shadow-card sm:grid-cols-2 lg:col-span-8">
           {modules.map(({ i: Icon, t, d }) => (
-            <div key={t} className="flex items-start gap-4 bg-background p-7 transition-colors hover:bg-surface/60">
+            <div key={t} className="flex items-start gap-4 bg-surface-elevated p-7 transition-colors hover:bg-surface/60">
               <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-border text-accent">
                 <Icon className="size-4.5" strokeWidth={1.75} aria-hidden="true" />
               </span>
@@ -312,7 +335,7 @@ function OpenSourcePillar() {
             you manage.
           </p>
         </div>
-        <dl className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-background shadow-card">
+        <dl className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-card">
           {spec.map(({ i: Icon, k, v }) => (
             <div key={k} className="grid gap-1 px-6 py-5 sm:grid-cols-[11rem_1fr] sm:gap-4">
               <dt className="flex items-center gap-2.5 text-sm font-medium">
@@ -351,7 +374,7 @@ function IsolationPillar() {
             return (
               <div
                 key={n}
-                className={`rounded-xl border bg-background p-6 shadow-card ${own ? "border-accent/60 shadow-lift" : "border-border"}`}
+                className={`rounded-xl border bg-surface-elevated p-6 shadow-card ${own ? "border-accent/60 shadow-lift" : "border-border"}`}
               >
                 <span className={`inline-flex size-9 items-center justify-center rounded-lg border border-border ${own ? "text-accent" : "text-text-muted"}`}>
                   <Database className="size-4" strokeWidth={1.75} />
@@ -389,7 +412,7 @@ function AudienceSplit() {
       <SectionHead eyebrow="09 · Audience" title="Built for developers and HR teams" />
       <div className="grid gap-5 md:grid-cols-2">
         {panels.map(({ i, t, items }) => (
-          <article key={t} className="rounded-2xl border border-border bg-background p-7 shadow-card md:p-9">
+          <article key={t} className="rounded-2xl border border-border bg-surface-elevated p-7 shadow-card md:p-9">
             <IconTile icon={i} />
             <h3 className="mt-8 text-xl font-semibold tracking-tight">{t}</h3>
             <ul className="mt-6 space-y-4 text-sm leading-relaxed">
@@ -419,7 +442,7 @@ function Deployment() {
         {deployments.map(({ i, t, d, fit }) => (
           <article
             key={t}
-            className="flex flex-col rounded-2xl border border-border bg-background p-7 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:shadow-lift"
+            className="flex flex-col rounded-2xl border border-border bg-surface-elevated p-7 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:shadow-lift"
           >
             <IconTile icon={i} />
             <h3 className="mt-8 text-lg font-semibold tracking-tight">{t}</h3>
@@ -432,7 +455,7 @@ function Deployment() {
         ))}
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-background shadow-card">
+      <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-surface-elevated shadow-card">
         <table className="w-full min-w-[640px] border-collapse text-left text-sm">
           <caption className="sr-only">Feature comparison across deployment options</caption>
           <thead>
@@ -467,7 +490,7 @@ function HowItWorks() {
         {steps.map(({ i: Icon, t, d, code }, n) => (
           <li
             key={t}
-            className="flex flex-col rounded-2xl border border-border bg-background p-7 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:shadow-lift"
+            className="flex flex-col rounded-2xl border border-border bg-surface-elevated p-7 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:shadow-lift"
           >
             <div className="flex items-center justify-between">
               <IconTile icon={Icon} />

@@ -8,7 +8,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors disabled:opacity-50 disabled:pointer-events-none";
 const variants: Record<Variant, string> = {
   primary: "bg-primary text-primary-foreground hover:bg-primary/85",
-  accent: "bg-accent text-primary-foreground hover:bg-accent/85",
+  accent: "bg-accent text-accent-foreground hover:bg-accent/85",
   secondary: "border border-border bg-background text-text hover:bg-surface",
   ghost: "text-text hover:bg-surface",
 };
