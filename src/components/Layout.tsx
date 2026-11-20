@@ -19,7 +19,7 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-export const h2Class = "text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl md:text-[2.75rem]";
+export const h2Class = "text-balance text-3xl font-semibold leading-[1.08] tracking-[-0.035em] sm:text-4xl md:text-5xl";
 
 const toneClass = {
   default: "",
@@ -61,7 +61,7 @@ export function SectionHead({ eyebrow, title, sub }: { eyebrow?: string; title: 
 
 export function IconTile({ icon: Icon }: { icon: LucideIcon }) {
   return (
-    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-accent shadow-card">
+    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground shadow-card">
       <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
     </span>
   );

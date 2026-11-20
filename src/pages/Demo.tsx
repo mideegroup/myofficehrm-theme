@@ -39,7 +39,7 @@ function CopyField({ label, value }: { label: string; value: string }) {
 
 function SharedCard() {
   return (
-    <article className="flex flex-col rounded-2xl border border-border bg-background p-6 shadow-card md:p-8">
+    <article className="flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 shadow-card md:p-8">
       <IconTile icon={Users} />
       <h2 className="text-xl font-semibold">Explore the shared demo</h2>
       <p className="mt-1.5 text-sm text-text-muted">Sign in with shared credentials. Everyone on this account sees the same data.</p>
@@ -72,7 +72,7 @@ function OwnSpaceCard() {
     setSent(true);
   };
   return (
-    <article className="flex flex-col rounded-2xl border border-accent/40 bg-background p-6 shadow-lift md:p-8">
+    <article className="flex flex-col rounded-2xl border border-accent/40 bg-surface-elevated p-6 shadow-lift md:p-8">
       <IconTile icon={Mail} />
       <h2 className="text-xl font-semibold">Get your own space</h2>
       <p className="mt-1.5 text-sm text-text-muted">

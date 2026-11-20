@@ -1,11 +1,11 @@
 import { Banknote, CalendarDays, Check, ChevronRight, FileText, Fingerprint, Type, ListChecks } from "lucide-react";
 
-const cardCls = "overflow-hidden rounded-xl border border-border bg-background";
+const cardCls = "overflow-hidden rounded-xl border border-border bg-surface-elevated";
 
 type StepState = "done" | "current" | "todo";
 
 const dotCls: Record<StepState, string> = {
-  done: "border-accent bg-accent text-primary-foreground",
+  done: "border-accent bg-accent text-accent-foreground",
   current: "border-accent bg-background text-accent",
   todo: "border-border bg-background text-text-muted",
 };
@@ -102,7 +102,7 @@ export function FieldBuilderCard() {
   );
 }
 
-export function LeaveRequestCard() {
+export function LeaveRequestCard({ compact = false }: { compact?: boolean }) {
   const details = [
     { k: "Dates", v: "2–4 Dec" },
     { k: "Duration", v: "3 days" },
@@ -125,14 +125,70 @@ export function LeaveRequestCard() {
           </div>
         ))}
       </dl>
-      <div className="space-y-5 px-5 py-5">
-        <Meter label="Annual leave" used={9} total={20} />
-        <Meter label="Sick leave" used={2} total={10} />
-      </div>
+      {!compact && (
+        <div className="space-y-5 px-5 py-5">
+          <Meter label="Annual leave" used={9} total={20} />
+          <Meter label="Sick leave" used={2} total={10} />
+        </div>
+      )}
       <div className="flex justify-end gap-2 border-t border-border bg-surface px-5 py-3">
         <span className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium">Decline</span>
         <span className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">Approve</span>
       </div>
+    </div>
+  );
+}
+
+export function TodayStrip() {
+  const items = [
+    { v: "231", l: "of 248 present", dot: "bg-success" },
+    { v: "9", l: "on leave today", dot: "bg-accent" },
+    { v: "3", l: "approvals pending", dot: "bg-warning" },
+    { v: "Dec 1", l: "payroll draft", dot: "bg-accent" },
+  ];
+  return (
+    <div aria-hidden="true" className={`${cardCls} shadow-card`}>
+      <div className="grid grid-cols-2 divide-border sm:grid-cols-4 sm:divide-x">
+        {items.map(({ v, l, dot }) => (
+          <div key={l} className="flex items-center gap-2.5 px-4 py-3.5">
+            <span className={`size-1.5 shrink-0 rounded-full ${dot}`} />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-tight">{v}</p>
+              <p className="truncate text-[11px] text-text-muted">{l}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function EmployeeMiniCard() {
+  return (
+    <div aria-hidden="true" className={`${cardCls} shadow-lift`}>
+      <div className="flex items-center gap-3 px-5 py-4">
+        <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-semibold ring-1 ring-border">
+          MT
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold">Mei Tanaka</p>
+          <p className="truncate text-xs text-text-muted">Financial controller · Finance</p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5 text-[11px] font-medium">
+          <span className="size-1.5 rounded-full bg-success" />
+          Active
+        </span>
+      </div>
+      <dl className="grid grid-cols-2 divide-x divide-border border-t border-border">
+        <div className="px-5 py-3">
+          <dt className="text-[11px] text-text-muted">Leave balance</dt>
+          <dd className="mt-0.5 text-xs font-medium">11 days</dd>
+        </div>
+        <div className="px-5 py-3">
+          <dt className="text-[11px] text-text-muted">Badge number</dt>
+          <dd className="mt-0.5 text-xs font-medium">ND-0042 · custom field</dd>
+        </div>
+      </dl>
     </div>
   );
 }
@@ -183,7 +239,7 @@ export function PayrollRunCard() {
       </ul>
       <div className="flex items-center justify-between gap-3 bg-surface px-5 py-3">
         <p className="text-xs text-text-muted">Review the run, then approve to lock it.</p>
-        <span className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">Approve run</span>
+        <span className="shrink-0 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground">Approve run</span>
       </div>
     </div>
   );
