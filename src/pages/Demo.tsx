@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { CheckCircle2, Copy, ExternalLink, Info, Mail, Smartphone, Users } from "lucide-react";
-import { Section } from "../components/Layout";
+import { IconTile, Section } from "../components/Layout";
 import { Button } from "../components/Button";
 
 const DEMO_URL = "https://demo.myofficehrm.com";
@@ -39,10 +39,8 @@ function CopyField({ label, value }: { label: string; value: string }) {
 
 function SharedCard() {
   return (
-    <article className="flex flex-col rounded-2xl border border-border bg-background p-6 md:p-8">
-      <span className="mb-4 inline-flex size-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-        <Users className="size-5" aria-hidden="true" />
-      </span>
+    <article className="flex flex-col rounded-2xl border border-border bg-background p-6 shadow-card md:p-8">
+      <IconTile icon={Users} />
       <h2 className="text-xl font-semibold">Explore the shared demo</h2>
       <p className="mt-1.5 text-sm text-text-muted">Sign in with shared credentials. Everyone on this account sees the same data.</p>
       <dl className="mt-6 space-y-3 rounded-xl bg-surface p-4">
@@ -74,10 +72,8 @@ function OwnSpaceCard() {
     setSent(true);
   };
   return (
-    <article className="flex flex-col rounded-2xl border border-accent/40 bg-background p-6 md:p-8">
-      <span className="mb-4 inline-flex size-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-        <Mail className="size-5" aria-hidden="true" />
-      </span>
+    <article className="flex flex-col rounded-2xl border border-accent/40 bg-background p-6 shadow-lift md:p-8">
+      <IconTile icon={Mail} />
       <h2 className="text-xl font-semibold">Get your own space</h2>
       <p className="mt-1.5 text-sm text-text-muted">
         We create a private department inside the demo org. You see only your team, so you can add and edit freely.

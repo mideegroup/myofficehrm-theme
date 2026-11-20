@@ -11,7 +11,7 @@ export const DOCS_URL = "https://docs.myofficehrm.com";
 
 const links = [
   { label: "Product", to: "/#product" },
-  { label: "Features", to: "/#features" },
+  { label: "Deployment", to: "/#deployment" },
   { label: "Docs", href: DOCS_URL },
 ];
 
