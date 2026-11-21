@@ -33,6 +33,8 @@ export const colourMap = {
 
 export const DEFAULT_SCHEME: ColorScheme = "default";
 
+const SCHEME_KEY = "scheme";
+
 /**
  * Select a scheme by writing `data-scheme` on the root element — the CSS
  * cascade then provides the correct lt/dk scale for the current mode
@@ -41,19 +43,39 @@ export const DEFAULT_SCHEME: ColorScheme = "default";
  *
  * Deliberately attribute-based, not inline-style based: inline `--accent-*`
  * overrides would beat `.dark` forever and break dark-mode re-theming.
+ *
+ * Persists to localStorage; `initScheme` restores it pre-paint.
  */
 export function applyScheme(scheme: ColorScheme, el = document.documentElement) {
   if (scheme === DEFAULT_SCHEME) el.removeAttribute("data-scheme");
   else el.dataset.scheme = scheme;
+  try {
+    localStorage.setItem(SCHEME_KEY, scheme);
+  } catch { /* storage unavailable */ }
 }
 
-/** Reset = fall back to the baked `default` scheme. */
+/** Reset = fall back to the baked `default` scheme (clears persistence). */
 export function resetScheme(el = document.documentElement) {
   el.removeAttribute("data-scheme");
+  try {
+    localStorage.removeItem(SCHEME_KEY);
+  } catch { /* storage unavailable */ }
 }
 
 /** The currently applied scheme (`default` when no override is set). */
 export function currentScheme(el = document.documentElement): ColorScheme {
   const v = el.dataset.scheme;
   return v && v in colourMap ? (v as ColorScheme) : DEFAULT_SCHEME;
+}
+
+/**
+ * Restore the persisted scheme onto the root element. Call as early as
+ * possible (index.html runs an inline equivalent pre-paint to avoid a
+ * scheme flash — spec 17 §6).
+ */
+export function initScheme(el = document.documentElement) {
+  try {
+    const v = localStorage.getItem(SCHEME_KEY);
+    if (v && v in colourMap) el.dataset.scheme = v;
+  } catch { /* storage unavailable */ }
 }
