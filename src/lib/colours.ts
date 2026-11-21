@@ -33,16 +33,27 @@ export const colourMap = {
 
 export const DEFAULT_SCHEME: ColorScheme = "default";
 
-/** Write a scheme's scale as CSS vars. Token-write only — never injects CSS (spec 17 §8). */
+/**
+ * Select a scheme by writing `data-scheme` on the root element — the CSS
+ * cascade then provides the correct lt/dk scale for the current mode
+ * (token-write only, spec 17 §8). Setting `default` removes the attribute
+ * and falls back to the baked `:root`/`.dark` values.
+ *
+ * Deliberately attribute-based, not inline-style based: inline `--accent-*`
+ * overrides would beat `.dark` forever and break dark-mode re-theming.
+ */
 export function applyScheme(scheme: ColorScheme, el = document.documentElement) {
-  const mode = el.classList.contains("dark") ? "dk" : "lt";
-  const scale = colourMap[scheme][mode];
-  for (const step of [10, 30, 50, 70, 90] as const) {
-    el.style.setProperty(`--accent-${step}`, scale[step]);
-  }
+  if (scheme === DEFAULT_SCHEME) el.removeAttribute("data-scheme");
+  else el.dataset.scheme = scheme;
 }
 
-/** Reset = re-apply the brand scheme. */
+/** Reset = fall back to the baked `default` scheme. */
 export function resetScheme(el = document.documentElement) {
-  applyScheme(DEFAULT_SCHEME, el);
+  el.removeAttribute("data-scheme");
+}
+
+/** The currently applied scheme (`default` when no override is set). */
+export function currentScheme(el = document.documentElement): ColorScheme {
+  const v = el.dataset.scheme;
+  return v && v in colourMap ? (v as ColorScheme) : DEFAULT_SCHEME;
 }

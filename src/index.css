@@ -149,6 +149,25 @@
   mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
 }
 
+/* Non-default schemes — applied via `data-scheme` (spec 17 §6).
+   Values mirror `colourMap` in src/lib/colours.ts; keep in sync.
+   Per-mode blocks mean scheme selection and dark mode compose freely:
+   inline overrides would break the .dark cascade. */
+[data-scheme="teal"] {
+  --accent-10: #EBFFFF;
+  --accent-30: #BDE8E7;
+  --accent-50: #007373;
+  --accent-70: #003A3B;
+  --accent-90: #002022;
+}
+[data-scheme="teal"].dark {
+  --accent-10: #002022;
+  --accent-30: #003A3B;
+  --accent-50: #3FA0A0;
+  --accent-70: #BDE8E7;
+  --accent-90: #EBFFFF;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
