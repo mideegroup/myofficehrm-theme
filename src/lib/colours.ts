@@ -23,12 +23,24 @@ export type NeutralRamp = Record<string, string>;
 export type SchemeEntry = { lt: Scale; dk: Scale; neutrals: { lt: NeutralRamp; dk: NeutralRamp } };
 
 /** Literal keys keep `ColorScheme` strict — add the scheme name here when
- *  adding its values to colourmap.json. */
+ *  adding its values to colourmap.json. Names are standard colour words
+ *  (no brand prefixes, no invented compounds — spec 17 §3). */
 type Schemes = {
   default: SchemeEntry;
   teal: SchemeEntry;
-  violet: SchemeEntry;
+  cyan: SchemeEntry;
+  steel: SchemeEntry;
   blue: SchemeEntry;
+  indigo: SchemeEntry;
+  violet: SchemeEntry;
+  magenta: SchemeEntry;
+  plum: SchemeEntry;
+  pink: SchemeEntry;
+  crimson: SchemeEntry;
+  red: SchemeEntry;
+  ember: SchemeEntry;
+  olive: SchemeEntry;
+  graphite: SchemeEntry;
 };
 
 export const colourMap = data as unknown as Schemes;

@@ -26,7 +26,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../com
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
 import { Separator } from "../components/ui/separator";
 import { toast } from "../components/ui/sonner";
-import { applyScheme, resetScheme } from "../lib/colours";
+import { applyScheme, resetScheme, colourMap, currentScheme, type ColorScheme } from "../lib/colours";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -39,6 +39,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export default function Ui() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [scheme, setScheme] = useState<ColorScheme>(currentScheme());
   return (
     <>
       <section className="border-b border-border bg-muted">
@@ -301,10 +302,35 @@ export default function Ui() {
           re-tint to the scheme's hue family (spec 17 §3). Statuses stay global. Selection persists via localStorage.
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="accent" onClick={() => applyScheme("teal")}>Teal</Button>
-          <Button variant="accent" onClick={() => applyScheme("violet")}>Violet</Button>
-          <Button variant="accent" onClick={() => applyScheme("blue")}>Blue</Button>
-          <Button variant="secondary" onClick={() => resetScheme()}>Reset to default</Button>
+          <Select
+            value={scheme}
+            onValueChange={(v) => {
+              const s = v as ColorScheme;
+              setScheme(s);
+              if (s === "default") resetScheme();
+              else applyScheme(s);
+            }}
+          >
+            <SelectTrigger className="w-52" aria-label="Colour scheme">
+              <SelectValue placeholder="Select scheme" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.keys(colourMap).map((name) => (
+                <SelectItem key={name} value={name}>
+                  <span className="inline-flex items-center gap-2">
+                    <span
+                      className="size-3 rounded-full border border-border"
+                      style={{ background: colourMap[name as ColorScheme].lt[50] }}
+                    />
+                    {name}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button variant="secondary" onClick={() => { resetScheme(); setScheme("default"); }}>
+            Reset to default
+          </Button>
           <span className="text-xs text-muted-foreground">Then toggle dark mode — dk scale inverts correctly.</span>
         </div>
       </Section>

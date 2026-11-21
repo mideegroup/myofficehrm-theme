@@ -44,8 +44,11 @@ Accent scale steps and their roles:
 
 ## Schemes
 
-`colourMap = { default, teal, violet, blue }` — `default` is the brand
-scheme (baked into `:root`/`.dark`); the rest are catalog options.
+`colourMap` — `default` is the brand scheme (baked into `:root`/`.dark`);
+14 catalog options: `teal`, `cyan`, `steel`, `blue`, `indigo`, `violet`,
+`magenta`, `plum`, `pink`, `crimson`, `red`, `ember`, `olive`, `graphite`
+(monochrome). Names are plain standard colour words (spec 17 §3) — no
+brand prefixes, no invented compounds.
 
 - `applyScheme("teal")` → `<html data-scheme="teal">`, persists to localStorage
 - `resetScheme()` → removes the attribute, restores `default`

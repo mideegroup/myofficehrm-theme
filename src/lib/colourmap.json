@@ -15,12 +15,20 @@
       "dk": { "background": "#0F1919", "foreground": "#ECF4F3", "card": "#182726", "popover": "#182726", "secondary": "#1D2B2A", "muted": "#1D2B2A", "muted-foreground": "#92A6A3", "surface-elevated": "#213130", "border": "#30423F", "input": "#3A4D4A" }
     }
   },
-  "violet": {
-    "lt": { "10": "#EDE9FE", "30": "#C4B5FD", "50": "#6D28D9", "70": "#5B21B6", "90": "#2E1065" },
-    "dk": { "10": "#211452", "30": "#4C1D95", "50": "#A78BFA", "70": "#C4B5FD", "90": "#EDE9FE" },
+  "cyan": {
+    "lt": { "10": "#E3F2F5", "30": "#BAE7F3", "50": "#007086", "70": "#005368", "90": "#002A3E" },
+    "dk": { "10": "#002A3E", "30": "#00455A", "50": "#379EB5", "70": "#5BBED5", "90": "#DDF3F9" },
     "neutrals": {
-      "lt": { "background": "#F9F8FB", "foreground": "#2C2934", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F1F0F6", "muted": "#F1F0F6", "muted-foreground": "#635F72", "surface-elevated": "#FFFFFF", "border": "#E2E0EA", "input": "#CCC9DB" },
-      "dk": { "background": "#13121A", "foreground": "#EFEDF5", "card": "#1D1B28", "popover": "#1D1B28", "secondary": "#232130", "muted": "#232130", "muted-foreground": "#9B96AD", "surface-elevated": "#282638", "border": "#3B3850", "input": "#46435E" }
+      "lt": { "background": "#F7FAFB", "foreground": "#242F31", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#EEF3F4", "muted": "#EEF3F4", "muted-foreground": "#58696B", "surface-elevated": "#FFFFFF", "border": "#D9E4E5", "input": "#C2D2D4" },
+      "dk": { "background": "#0F191A", "foreground": "#ECF4F5", "card": "#172728", "popover": "#172728", "secondary": "#1C2B2C", "muted": "#1C2B2C", "muted-foreground": "#90A7A9", "surface-elevated": "#203233", "border": "#2E4344", "input": "#384E50" }
+    }
+  },
+  "steel": {
+    "lt": { "10": "#EAEFF6", "30": "#D2DFF5", "50": "#4E638A", "70": "#33476C", "90": "#0F2041" },
+    "dk": { "10": "#0F2041", "30": "#273A5D", "50": "#7990B9", "70": "#97AFD9", "90": "#E8EFFA" },
+    "neutrals": {
+      "lt": { "background": "#F8F9FB", "foreground": "#272B33", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#EFF2F6", "muted": "#EFF2F6", "muted-foreground": "#5D6473", "surface-elevated": "#FFFFFF", "border": "#DFE3EA", "input": "#C8CEDA" },
+      "dk": { "background": "#11141A", "foreground": "#EDF0F6", "card": "#1A1E29", "popover": "#1A1E29", "secondary": "#1F2430", "muted": "#1F2430", "muted-foreground": "#96A0B4", "surface-elevated": "#232836", "border": "#333C4F", "input": "#3D475C" }
     }
   },
   "blue": {
@@ -29,6 +37,86 @@
     "neutrals": {
       "lt": { "background": "#F8F9FC", "foreground": "#252A36", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#EFF1F7", "muted": "#EFF1F7", "muted-foreground": "#5B6272", "surface-elevated": "#FFFFFF", "border": "#DEE2EB", "input": "#C6CCD9" },
       "dk": { "background": "#10131A", "foreground": "#ECF0F7", "card": "#181D29", "popover": "#181D29", "secondary": "#1D2330", "muted": "#1D2330", "muted-foreground": "#929CB0", "surface-elevated": "#212839", "border": "#303A4E", "input": "#3A4659" }
+    }
+  },
+  "indigo": {
+    "lt": { "10": "#ECECFF", "30": "#D8D7FF", "50": "#5E4EBC", "70": "#452F9B", "90": "#24006B" },
+    "dk": { "10": "#24006B", "30": "#391E8B", "50": "#887CEF", "70": "#A59CFF", "90": "#EBEBFF" },
+    "neutrals": {
+      "lt": { "background": "#F9F9FC", "foreground": "#2A2837", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F0F0F7", "muted": "#F0F0F7", "muted-foreground": "#605D73", "surface-elevated": "#FFFFFF", "border": "#E1E0EC", "input": "#CAC8DC" },
+      "dk": { "background": "#12111B", "foreground": "#EEEDF6", "card": "#1B1A29", "popover": "#1B1A29", "secondary": "#22202F", "muted": "#22202F", "muted-foreground": "#9994AE", "surface-elevated": "#262538", "border": "#3A3751", "input": "#45415F" }
+    }
+  },
+  "violet": {
+    "lt": { "10": "#EDE9FE", "30": "#C4B5FD", "50": "#6D28D9", "70": "#5B21B6", "90": "#2E1065" },
+    "dk": { "10": "#211452", "30": "#4C1D95", "50": "#A78BFA", "70": "#C4B5FD", "90": "#EDE9FE" },
+    "neutrals": {
+      "lt": { "background": "#F9F8FB", "foreground": "#2C2934", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F1F0F6", "muted": "#F1F0F6", "muted-foreground": "#635F72", "surface-elevated": "#FFFFFF", "border": "#E2E0EA", "input": "#CCC9DB" },
+      "dk": { "background": "#13121A", "foreground": "#EFEDF5", "card": "#1D1B28", "popover": "#1D1B28", "secondary": "#232130", "muted": "#232130", "muted-foreground": "#9B96AD", "surface-elevated": "#282638", "border": "#3B3850", "input": "#46435E" }
+    }
+  },
+  "magenta": {
+    "lt": { "10": "#F8E7FF", "30": "#FAC7FF", "50": "#911BBA", "70": "#720099", "90": "#460069" },
+    "dk": { "10": "#460069", "30": "#630089", "50": "#C156ED", "70": "#E277FF", "90": "#FDE4FF" },
+    "neutrals": {
+      "lt": { "background": "#FBF8FC", "foreground": "#2F2833", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F5F0F5", "muted": "#F5F0F5", "muted-foreground": "#6A5F70", "surface-elevated": "#FFFFFF", "border": "#E7E0E8", "input": "#D5C9D8" },
+      "dk": { "background": "#181118", "foreground": "#F3EDF3", "card": "#251A25", "popover": "#251A25", "secondary": "#2A2029", "muted": "#2A2029", "muted-foreground": "#AC9DAB", "surface-elevated": "#2F2530", "border": "#473747", "input": "#534153" }
+    }
+  },
+  "plum": {
+    "lt": { "10": "#FFF2FD", "30": "#FFCBE0", "50": "#9F3867", "70": "#5E0031", "90": "#3E0019" },
+    "dk": { "10": "#3E0019", "30": "#5E0031", "50": "#D26593", "70": "#FFCBE0", "90": "#FFF2FD" },
+    "neutrals": {
+      "lt": { "background": "#FBF8FA", "foreground": "#302A2D", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F5F0F2", "muted": "#F5F0F2", "muted-foreground": "#6D5F65", "surface-elevated": "#FFFFFF", "border": "#E8E0E3", "input": "#D8C9CF" },
+      "dk": { "background": "#181114", "foreground": "#F4EDF0", "card": "#261A1F", "popover": "#261A1F", "secondary": "#2B2025", "muted": "#2B2025", "muted-foreground": "#AD9DA5", "surface-elevated": "#30242A", "border": "#483740", "input": "#55404A" }
+    }
+  },
+  "pink": {
+    "lt": { "10": "#FCE7F3", "30": "#F9A8D4", "50": "#DB2777", "70": "#9D174D", "90": "#500724" },
+    "dk": { "10": "#3D0B21", "30": "#831843", "50": "#F472B6", "70": "#F9A8D4", "90": "#FCE7F3" },
+    "neutrals": {
+      "lt": { "background": "#FBF8FA", "foreground": "#302A2E", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F5EFF3", "muted": "#F5EFF3", "muted-foreground": "#6D5F68", "surface-elevated": "#FFFFFF", "border": "#E9E0E5", "input": "#DAC9D1" },
+      "dk": { "background": "#181114", "foreground": "#F5EDF1", "card": "#271A20", "popover": "#271A20", "secondary": "#2C2026", "muted": "#2C2026", "muted-foreground": "#B09DA8", "surface-elevated": "#31242A", "border": "#4C3641", "input": "#58424C" }
+    }
+  },
+  "crimson": {
+    "lt": { "10": "#FFE7EA", "30": "#FFC7D0", "50": "#AF244A", "70": "#8D0030", "90": "#5A000B" },
+    "dk": { "10": "#5A000B", "30": "#7C0023", "50": "#E45874", "70": "#FF7892", "90": "#FFE3E7" },
+    "neutrals": {
+      "lt": { "background": "#FBF8F8", "foreground": "#31292B", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F6EFF1", "muted": "#F6EFF1", "muted-foreground": "#6E5E62", "surface-elevated": "#FFFFFF", "border": "#EAE0E2", "input": "#DBCACD" },
+      "dk": { "background": "#181012", "foreground": "#F5ECEE", "card": "#271A1D", "popover": "#271A1D", "secondary": "#2C2023", "muted": "#2C2023", "muted-foreground": "#AF9CA1", "surface-elevated": "#312327", "border": "#4B363B", "input": "#574147" }
+    }
+  },
+  "red": {
+    "lt": { "10": "#FFE5E4", "30": "#FFBFBE", "50": "#E5173F", "70": "#A00001", "90": "#690000" },
+    "dk": { "10": "#690000", "30": "#8D0000", "50": "#FC3851", "70": "#FF5F6F", "90": "#FFE0DF" },
+    "neutrals": {
+      "lt": { "background": "#FBF8F8", "foreground": "#312A2B", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F6F0F0", "muted": "#F6F0F0", "muted-foreground": "#6D5E60", "surface-elevated": "#FFFFFF", "border": "#EBE1E1", "input": "#DBC9CA" },
+      "dk": { "background": "#181011", "foreground": "#F5ECED", "card": "#271A1B", "popover": "#271A1B", "secondary": "#2C2021", "muted": "#2C2021", "muted-foreground": "#AF9B9E", "surface-elevated": "#312324", "border": "#4B3637", "input": "#574041" }
+    }
+  },
+  "ember": {
+    "lt": { "10": "#FFE9E0", "30": "#FFCEB1", "50": "#A93900", "70": "#881400", "90": "#560000" },
+    "dk": { "10": "#560000", "30": "#770000", "50": "#DD6927", "70": "#FF884B", "90": "#FFE7D8" },
+    "neutrals": {
+      "lt": { "background": "#FBF8F6", "foreground": "#322B26", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F6F0ED", "muted": "#F6F0ED", "muted-foreground": "#70605A", "surface-elevated": "#FFFFFF", "border": "#EBE1DC", "input": "#DACCC5" },
+      "dk": { "background": "#181210", "foreground": "#F6EEEA", "card": "#281D19", "popover": "#281D19", "secondary": "#2D2320", "muted": "#2D2320", "muted-foreground": "#B2A097", "surface-elevated": "#322622", "border": "#4C3A33", "input": "#59443C" }
+    }
+  },
+  "olive": {
+    "lt": { "10": "#EAF1E5", "30": "#D0E6C2", "50": "#49702B", "70": "#2E5309", "90": "#062B00" },
+    "dk": { "10": "#062B00", "30": "#004B12", "50": "#749E58", "70": "#92BD76", "90": "#E7F3E1" },
+    "neutrals": {
+      "lt": { "background": "#F9FAF7", "foreground": "#2C3025", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F2F4ED", "muted": "#F2F4ED", "muted-foreground": "#646B56", "surface-elevated": "#FFFFFF", "border": "#E3E5DA", "input": "#CDD2C3" },
+      "dk": { "background": "#151812", "foreground": "#F1F4EB", "card": "#22271C", "popover": "#22271C", "secondary": "#262B1F", "muted": "#262B1F", "muted-foreground": "#A2A98F", "surface-elevated": "#2A3022", "border": "#3E4532", "input": "#4A503C" }
+    }
+  },
+  "graphite": {
+    "lt": { "10": "#F3F4F6", "30": "#D1D5DB", "50": "#1F2937", "70": "#111827", "90": "#030712" },
+    "dk": { "10": "#111827", "30": "#374151", "50": "#E5E7EB", "70": "#F3F4F6", "90": "#F9FAFB" },
+    "neutrals": {
+      "lt": { "background": "#FAFAFA", "foreground": "#262626", "card": "#FFFFFF", "popover": "#FFFFFF", "secondary": "#F3F3F3", "muted": "#F3F3F3", "muted-foreground": "#5C5C5C", "surface-elevated": "#FFFFFF", "border": "#E0E0E0", "input": "#CFCFCF" },
+      "dk": { "background": "#141414", "foreground": "#EDEDED", "card": "#1E1E1E", "popover": "#1E1E1E", "secondary": "#242424", "muted": "#242424", "muted-foreground": "#9E9E9E", "surface-elevated": "#282828", "border": "#3A3A3A", "input": "#444444" }
     }
   }
 }
