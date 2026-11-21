@@ -8,23 +8,37 @@ const SCHEME_JSON = fileURLToPath(new URL("./src/lib/colourmap.json", import.met
 const VIRTUAL_ID = "virtual:schemes.css";
 const RESOLVED_ID = "\0" + VIRTUAL_ID;
 
-type JsonMap = Record<string, { lt: Record<string, string>; dk: Record<string, string> }>;
+type JsonMap = Record<
+  string,
+  {
+    lt: Record<string, string>;
+    dk: Record<string, string>;
+    neutrals: { lt: Record<string, string>; dk: Record<string, string> };
+  }
+>;
 
 /**
  * Emits scheme CSS from src/lib/colourmap.json — the single source (spec 17 §7).
  * `default` → :root / .dark; every other scheme → [data-scheme] blocks.
+ * Each block carries the accent scale AND the scheme's neutral ramp (spec 17 §3).
  * The JSON is re-read on each load so edits hot-apply in dev.
  */
 function emitSchemeCss(): string {
   const map = JSON.parse(readFileSync(SCHEME_JSON, "utf8")) as JsonMap;
-  const block = (sel: string, scale: Record<string, string>) =>
+  const block = (sel: string, scale: Record<string, string>, neutrals: Record<string, string>) =>
     `${sel} {\n${Object.entries(scale)
       .map(([step, v]) => `  --accent-${step}: ${v};`)
+      .concat(Object.entries(neutrals).map(([token, v]) => `  --${token}: ${v};`))
       .join("\n")}\n}`;
   const parts = ["/* GENERATED from src/lib/colourmap.json — do not edit by hand. */"];
   for (const [name, scheme] of Object.entries(map)) {
-    if (name === "default") parts.push(block(":root", scheme.lt), block(".dark", scheme.dk));
-    else parts.push(block(`[data-scheme="${name}"]`, scheme.lt), block(`[data-scheme="${name}"].dark`, scheme.dk));
+    if (name === "default")
+      parts.push(block(":root", scheme.lt, scheme.neutrals.lt), block(".dark", scheme.dk, scheme.neutrals.dk));
+    else
+      parts.push(
+        block(`[data-scheme="${name}"]`, scheme.lt, scheme.neutrals.lt),
+        block(`[data-scheme="${name}"].dark`, scheme.dk, scheme.neutrals.dk),
+      );
   }
   return parts.join("\n\n") + "\n";
 }

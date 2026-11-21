@@ -51,12 +51,15 @@ scheme (baked into `:root`/`.dark`); the rest are catalog options.
 - `resetScheme()` → removes the attribute, restores `default`
 - `initScheme()` → restores persisted choice (called in `main.tsx`;
   `index.html` runs an inline equivalent pre-paint)
-- Schemes swap the accent scale only; neutrals stay shared
+- A scheme = accent scale **+ neutral ramp** tinted to its hue family —
+  background, surfaces, borders, text re-tint on selection. Ramps share one
+  lightness ladder, so contrast carries over; statuses stay global.
 
-Adding a scheme: add its lt/dk steps to `src/lib/colourmap.json` **and** the
-scheme name to the `Schemes` type in `src/lib/colours.ts` — the CSS is
-generated (`virtual:schemes.css` via the `scheme-css` plugin in
-`vite.config.ts`), never write `[data-scheme]` blocks by hand.
+Adding a scheme: add its lt/dk accent steps **and** lt/dk `neutrals` ramp to
+`src/lib/colourmap.json`, plus the scheme name to the `Schemes` type in
+`src/lib/colours.ts` — the CSS is generated (`virtual:schemes.css` via the
+`scheme-css` plugin in `vite.config.ts`), never write `[data-scheme]` blocks
+by hand. Neutrals must keep the reference lightness ladder (spec 17 §3).
 
 ## Dark mode
 

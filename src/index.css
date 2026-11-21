@@ -15,19 +15,11 @@
   --primary-foreground: var(--accent-10);
   --ring: var(--accent-50);
 
-  --background: #F8FAF9;
-  --foreground: #26302C;
-  --card: #FFFFFF;
+  /* Neutral ramp is generated per-scheme (colourmap.json →
+     virtual:schemes.css); these aliases follow whichever ramp applies. */
   --card-foreground: var(--foreground);
-  --popover: #FFFFFF;
   --popover-foreground: var(--foreground);
-  --secondary: #EFF4F1;
   --secondary-foreground: var(--foreground);
-  --muted: #EFF4F1;
-  --muted-foreground: #5A6B64;
-  --surface-elevated: #FFFFFF;
-  --border: #DCE5E0;
-  --input: #C7D3CD;
 
   --destructive: #B4453B;
   --destructive-foreground: #FFFFFF;
@@ -50,19 +42,10 @@
   --primary-foreground: var(--accent-10);
   --ring: var(--accent-50);
 
-  --background: #101917;
-  --foreground: #EDF4F0;
-  --card: #1A2723;
+  /* Neutral ramp generated per-scheme (see :root note) */
   --card-foreground: var(--foreground);
-  --popover: #1A2723;
   --popover-foreground: var(--foreground);
-  --secondary: #1E2C27;
   --secondary-foreground: var(--foreground);
-  --muted: #1E2C27;
-  --muted-foreground: #93A79E;
-  --surface-elevated: #22312C;
-  --border: #32433D;
-  --input: #3B4E46;
 
   --destructive: #E07A6E;
   --destructive-foreground: #10181A;

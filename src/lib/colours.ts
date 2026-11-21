@@ -17,7 +17,10 @@ import data from "./colourmap.json";
 
 export type ScaleStep = 10 | 30 | 50 | 70 | 90;
 export type Scale = Record<ScaleStep, string>;
-export type SchemeEntry = { lt: Scale; dk: Scale };
+/** Neutral ramp keys = CSS token names (no leading --). */
+export type NeutralRamp = Record<string, string>;
+/** A scheme = accent scale + hue-family neutral ramp (spec 17 §3). */
+export type SchemeEntry = { lt: Scale; dk: Scale; neutrals: { lt: NeutralRamp; dk: NeutralRamp } };
 
 /** Literal keys keep `ColorScheme` strict — add the scheme name here when
  *  adding its values to colourmap.json. */

@@ -297,8 +297,8 @@ export default function Ui() {
       <Section className="border-t border-border bg-muted">
         <SectionHead eyebrow="Theming" title="Scheme switcher" />
         <p className="mb-5 max-w-xl text-sm text-muted-foreground">
-          Schemes swap the accent scale only — backgrounds and neutrals stay shared (spec 17 §3).
-          Selection persists via localStorage.
+          Schemes swap the accent scale AND the neutral ramp — background, surfaces and borders
+          re-tint to the scheme's hue family (spec 17 §3). Statuses stay global. Selection persists via localStorage.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="accent" onClick={() => applyScheme("teal")}>Teal</Button>
