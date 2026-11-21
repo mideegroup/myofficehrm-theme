@@ -12,11 +12,13 @@ React 19 · TypeScript · Vite · Tailwind CSS v4 · Radix UI · Inter (`@fontso
 ## The three layers
 
 ```
-src/lib/colours.ts   colourMap — named schemes × {lt,dk} × {10,30,50,70,90}
-        │  applyScheme() writes data-scheme="..." on <html>
-        ▼
-src/index.css        :root / .dark define tokens; [data-scheme] blocks per
-                     scheme; @theme inline maps everything to Tailwind utilities
+src/lib/colourmap.json  the single source — named schemes × {lt,dk} × steps
+        │  read by ┌─────────────────────────────┐
+        │          │ src/lib/colours.ts (typed)  │ → applyScheme(), currentScheme()
+        │          │ scheme-css Vite plugin      │ → virtual:schemes.css
+        ▼          └─────────────────────────────┘
+src/index.css        role aliases + neutrals/statuses/shape; @theme inline
+                     maps everything to Tailwind utilities
         ▼
 src/components/ui/   primitives use role utilities only (bg-accent,
                      text-muted-foreground, ring-ring, ...) — never raw hex
@@ -51,9 +53,10 @@ scheme (baked into `:root`/`.dark`); the rest are catalog options.
   `index.html` runs an inline equivalent pre-paint)
 - Schemes swap the accent scale only; neutrals stay shared
 
-Adding a scheme: `colourMap` entry + `[data-scheme="x"]` and
-`[data-scheme="x"].dark` blocks in `index.css` (values duplicated there by
-hand until generated from one source — spec 17 §7).
+Adding a scheme: add its lt/dk steps to `src/lib/colourmap.json` **and** the
+scheme name to the `Schemes` type in `src/lib/colours.ts` — the CSS is
+generated (`virtual:schemes.css` via the `scheme-css` plugin in
+`vite.config.ts`), never write `[data-scheme]` blocks by hand.
 
 ## Dark mode
 
