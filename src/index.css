@@ -167,6 +167,34 @@
   --accent-70: #BDE8E7;
   --accent-90: #EBFFFF;
 }
+[data-scheme="violet"] {
+  --accent-10: #EDE9FE;
+  --accent-30: #C4B5FD;
+  --accent-50: #6D28D9;
+  --accent-70: #5B21B6;
+  --accent-90: #2E1065;
+}
+[data-scheme="violet"].dark {
+  --accent-10: #211452;
+  --accent-30: #4C1D95;
+  --accent-50: #A78BFA;
+  --accent-70: #C4B5FD;
+  --accent-90: #EDE9FE;
+}
+[data-scheme="blue"] {
+  --accent-10: #DBEAFE;
+  --accent-30: #93C5FD;
+  --accent-50: #1D4ED8;
+  --accent-70: #1E40AF;
+  --accent-90: #172554;
+}
+[data-scheme="blue"].dark {
+  --accent-10: #0B1B3D;
+  --accent-30: #1E3A8A;
+  --accent-50: #60A5FA;
+  --accent-70: #93C5FD;
+  --accent-90: #DBEAFE;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

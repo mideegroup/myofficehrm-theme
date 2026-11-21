@@ -301,7 +301,9 @@ export default function Ui() {
           Selection persists via localStorage.
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="accent" onClick={() => applyScheme("teal")}>Teal scheme</Button>
+          <Button variant="accent" onClick={() => applyScheme("teal")}>Teal</Button>
+          <Button variant="accent" onClick={() => applyScheme("violet")}>Violet</Button>
+          <Button variant="accent" onClick={() => applyScheme("blue")}>Blue</Button>
           <Button variant="secondary" onClick={() => resetScheme()}>Reset to default</Button>
           <span className="text-xs text-muted-foreground">Then toggle dark mode — dk scale inverts correctly.</span>
         </div>

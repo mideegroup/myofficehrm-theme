@@ -42,8 +42,8 @@ Accent scale steps and their roles:
 
 ## Schemes
 
-`colourMap = { default, teal }` — `default` is the brand scheme
-(baked into `:root`/`.dark`), `teal` is a catalog option.
+`colourMap = { default, teal, violet, blue }` — `default` is the brand
+scheme (baked into `:root`/`.dark`); the rest are catalog options.
 
 - `applyScheme("teal")` → `<html data-scheme="teal">`, persists to localStorage
 - `resetScheme()` → removes the attribute, restores `default`

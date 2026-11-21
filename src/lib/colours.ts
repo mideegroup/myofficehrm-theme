@@ -27,8 +27,14 @@ export const colourMap = {
     lt: { 10: "#EBFFFF", 30: "#BDE8E7", 50: "#007373", 70: "#003A3B", 90: "#002022" },
     dk: { 10: "#002022", 30: "#003A3B", 50: "#3FA0A0", 70: "#BDE8E7", 90: "#EBFFFF" },
   },
-  // Reserved for the tenant-theme catalog (D-th-1, D-th-2):
-  // violet: { lt: {...}, dk: {...} },
+  violet: {
+    lt: { 10: "#EDE9FE", 30: "#C4B5FD", 50: "#6D28D9", 70: "#5B21B6", 90: "#2E1065" },
+    dk: { 10: "#211452", 30: "#4C1D95", 50: "#A78BFA", 70: "#C4B5FD", 90: "#EDE9FE" },
+  },
+  blue: {
+    lt: { 10: "#DBEAFE", 30: "#93C5FD", 50: "#1D4ED8", 70: "#1E40AF", 90: "#172554" },
+    dk: { 10: "#0B1B3D", 30: "#1E3A8A", 50: "#60A5FA", 70: "#93C5FD", 90: "#DBEAFE" },
+  },
 } as const;
 
 export const DEFAULT_SCHEME: ColorScheme = "default";
