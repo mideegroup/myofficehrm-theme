@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import { LogoFull } from "./Logo";
 import { DOCS_URL, GITHUB_URL } from "./Nav";
 
-const col = "text-sm text-text-muted transition-colors hover:text-text";
+const col = "text-sm text-muted-foreground transition-colors hover:text-foreground";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface">
+    <footer className="border-t border-border bg-muted">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
         <div>
           <LogoFull />
-          <p className="mt-4 max-w-xs text-sm text-text-muted">
+          <p className="mt-4 max-w-xs text-sm text-muted-foreground">
             Open-source, configurable HRM &amp; Payroll. Built by MiDee Group Pvt Ltd.
           </p>
         </div>
@@ -28,7 +28,7 @@ export function Footer() {
         </nav>
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-text-muted sm:px-6">
+        <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted-foreground sm:px-6">
           © {new Date().getFullYear()} MiDee Group Pvt Ltd. Licensed under AGPL-3.0.
         </p>
       </div>

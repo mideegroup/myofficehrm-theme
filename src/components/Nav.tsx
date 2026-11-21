@@ -21,11 +21,11 @@ function StarBadge() {
       href={GITHUB_URL}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-text-muted transition-colors hover:bg-surface hover:text-text"
+      className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
     >
       <GithubIcon />
       GitHub
-      <span className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs text-text">
+      <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted px-1.5 py-0.5 text-xs text-foreground">
         <Star className="size-3 fill-warning text-warning" aria-hidden="true" />
         1.2k
       </span>
@@ -33,7 +33,7 @@ function StarBadge() {
   );
 }
 
-const linkCls = "rounded-lg px-2.5 py-1.5 text-sm font-medium text-text-muted transition-colors hover:bg-surface hover:text-text";
+const linkCls = "rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -58,7 +58,7 @@ export function Nav() {
           <Button to="/demo" className="hidden sm:inline-flex">Try demo</Button>
           <button
             type="button"
-            className="inline-flex size-9 items-center justify-center rounded-lg text-text hover:bg-surface md:hidden"
+            className="inline-flex size-9 items-center justify-center rounded-lg text-foreground hover:bg-muted md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"

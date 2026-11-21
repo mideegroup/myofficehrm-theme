@@ -41,7 +41,7 @@ function Hero() {
           <h1 className="mt-8 text-balance text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
             Configurable HRM &amp; Payroll — open source, self-hosted, fits your org
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg text-text-muted">
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg text-muted-foreground">
             Model your own fields, forms and workflows without touching code. Run it on your own server, or
             let us host it. Your HR data stays yours.
           </p>
@@ -69,7 +69,7 @@ function TrustStrip() {
     { i: Database, t: "Your data, physically isolated per tenant" },
   ];
   return (
-    <div className="border-y border-border bg-surface">
+    <div className="border-y border-border bg-muted">
       <ul className="mx-auto grid max-w-6xl gap-4 px-4 py-5 sm:px-6 md:grid-cols-3 md:gap-6">
         {items.map(({ i: Icon, t }) => (
           <li key={t} className="flex items-center gap-2.5 text-sm font-medium md:justify-center">
@@ -83,26 +83,26 @@ function TrustStrip() {
 
 function Card({ icon: Icon, title, text }: { icon: typeof Users; title: string; text: string }) {
   return (
-    <div className="rounded-xl border border-border bg-background p-5 transition-colors hover:border-accent/50">
-      <div className="mb-4 inline-flex size-9 items-center justify-center rounded-lg bg-accent/10 text-accent">
+    <div className="rounded-xl border border-border bg-background p-5 transition-colors hover:border-accent-30">
+      <div className="mb-4 inline-flex size-9 items-center justify-center rounded-lg bg-accent-10 text-accent">
         <Icon className="size-5" aria-hidden="true" />
       </div>
       <h3 className="font-semibold">{title}</h3>
-      <p className="mt-1.5 text-sm text-text-muted">{text}</p>
+      <p className="mt-1.5 text-sm text-muted-foreground">{text}</p>
     </div>
   );
 }
 
 function Isolation() {
   return (
-    <Section className="border-t border-border bg-surface">
+    <Section className="border-t border-border bg-muted">
       <div className="grid items-center gap-10 md:grid-cols-2">
         <div>
           <p className="mb-3 text-sm font-medium text-accent">Trust by architecture</p>
           <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
             Separated, not just filtered
           </h2>
-          <p className="mt-3 text-text-muted md:text-lg">
+          <p className="mt-3 text-muted-foreground md:text-lg">
             Most multi-tenant apps keep everyone in one database and add a WHERE clause. We give every tenant
             its own database, so a missing filter can never leak another company's payroll.
           </p>
@@ -111,11 +111,11 @@ function Isolation() {
           {["Tenant A", "Tenant B", "Tenant C", "Your org"].map((n, k) => (
             <div
               key={n}
-              className={`rounded-lg border p-4 ${k === 3 ? "border-accent bg-accent/5" : "border-border bg-background"}`}
+              className={`rounded-lg border p-4 ${k === 3 ? "border-accent bg-accent-10" : "border-border bg-background"}`}
             >
-              <Database className={`size-5 ${k === 3 ? "text-accent" : "text-text-muted"}`} />
+              <Database className={`size-5 ${k === 3 ? "text-accent" : "text-muted-foreground"}`} />
               <p className="mt-3 text-sm font-medium">{n}</p>
-              <p className="font-mono text-xs text-text-muted">db_{n.toLowerCase().replace(" ", "_")}</p>
+              <p className="font-mono text-xs text-muted-foreground">db_{n.toLowerCase().replace(" ", "_")}</p>
             </div>
           ))}
         </div>
@@ -140,7 +140,7 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section className="border-t border-border bg-surface">
+      <Section className="border-t border-border bg-muted">
         <SectionHead eyebrow="Modules" title="Everything HR runs on, in one place" sub="Use what you need today and switch on the rest later." />
         <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {modules.map(({ i: Icon, t, d }) => (
@@ -148,12 +148,12 @@ export default function Home() {
               <Icon className="mt-0.5 size-5 shrink-0 text-accent" aria-hidden="true" />
               <div>
                 <h3 className="font-semibold">{t}</h3>
-                <p className="text-sm text-text-muted">{d}</p>
+                <p className="text-sm text-muted-foreground">{d}</p>
               </div>
             </div>
           ))}
         </div>
-        <p className="mt-6 flex items-center gap-2 text-sm text-text-muted">
+        <p className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Smartphone className="size-4" aria-hidden="true" /> Employees get an ESS portal on web and a mobile app.
         </p>
       </Section>
@@ -172,9 +172,9 @@ export default function Home() {
                 <Icon className="size-5 text-accent" aria-hidden="true" />
               </div>
               <h3 className="mt-4 text-lg font-semibold">{t}</h3>
-              <p className="mt-1.5 text-sm text-text-muted">{d}</p>
+              <p className="mt-1.5 text-sm text-muted-foreground">{d}</p>
               {code && (
-                <code className="mt-4 block rounded-lg border border-border bg-surface px-3 py-2 font-mono text-xs">
+                <code className="mt-4 block rounded-lg border border-border bg-muted px-3 py-2 font-mono text-xs">
                   $ {code}
                 </code>
               )}
@@ -187,15 +187,15 @@ export default function Home() {
             { i: Lock, t: "Hosted SaaS", d: "We run it, you configure it." },
             { i: Database, t: "Dedicated instance", d: "Your own isolated deployment." },
           ].map(({ i: Icon, t, d }) => (
-            <div key={t} className="flex items-center gap-3 rounded-lg bg-surface px-4 py-3">
-              <Icon className="size-4 shrink-0 text-text-muted" aria-hidden="true" />
-              <p className="text-sm"><span className="font-medium">{t}.</span> <span className="text-text-muted">{d}</span></p>
+            <div key={t} className="flex items-center gap-3 rounded-lg bg-muted px-4 py-3">
+              <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <p className="text-sm"><span className="font-medium">{t}.</span> <span className="text-muted-foreground">{d}</span></p>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section className="border-t border-border bg-surface">
+      <Section className="border-t border-border bg-muted">
         <div className="grid items-center gap-8 md:grid-cols-[1.2fr_1fr]">
           <div>
             <p className="mb-3 flex items-center gap-2 text-sm font-medium text-accent">
@@ -204,7 +204,7 @@ export default function Home() {
             <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
               Free forever core. Premium packs for what enterprises need.
             </h2>
-            <p className="mt-3 text-text-muted md:text-lg">
+            <p className="mt-3 text-muted-foreground md:text-lg">
               The HR suite you see on GitHub is the real product, not a trial. Later, optional packs will cover
               things larger organisations ask for. We will never move core features behind them.
             </p>

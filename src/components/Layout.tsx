@@ -31,7 +31,7 @@ export function SectionHead({ eyebrow, title, sub }: { eyebrow?: string; title: 
     <div className="mb-10 max-w-2xl md:mb-14">
       {eyebrow && <p className="mb-3 text-sm font-medium text-accent">{eyebrow}</p>}
       <h2 className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">{title}</h2>
-      {sub && <p className="mt-3 text-pretty text-text-muted md:text-lg">{sub}</p>}
+      {sub && <p className="mt-3 text-pretty text-muted-foreground md:text-lg">{sub}</p>}
     </div>
   );
 }

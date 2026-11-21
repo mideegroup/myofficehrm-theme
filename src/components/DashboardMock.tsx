@@ -13,7 +13,7 @@ const rows = [
   ["Aanya Rao", "Design", "Approved", "text-success"],
   ["Diego Silva", "Engineering", "Pending", "text-warning"],
   ["Mei Tanaka", "Finance", "Approved", "text-success"],
-  ["Omar Haddad", "Support", "Declined", "text-danger"],
+  ["Omar Haddad", "Support", "Declined", "text-destructive"],
 ];
 
 export function DashboardMock() {
@@ -23,21 +23,21 @@ export function DashboardMock() {
       aria-label="Illustration of the myOfficeHRM dashboard"
       className="overflow-hidden rounded-xl border border-border bg-background shadow-2xl shadow-primary/10"
     >
-      <div className="flex items-center gap-1.5 border-b border-border bg-surface px-4 py-2.5">
+      <div className="flex items-center gap-1.5 border-b border-border bg-muted px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-border" />
         <span className="size-2.5 rounded-full bg-border" />
         <span className="size-2.5 rounded-full bg-border" />
-        <span className="mx-auto rounded-md border border-border bg-background px-3 py-0.5 text-xs text-text-muted">
+        <span className="mx-auto rounded-md border border-border bg-background px-3 py-0.5 text-xs text-muted-foreground">
           demo.myofficehrm.com
         </span>
       </div>
       <div className="grid md:grid-cols-[170px_1fr]">
-        <aside className="hidden border-r border-border bg-surface/60 p-3 md:block">
+        <aside className="hidden border-r border-border bg-muted/60 p-3 md:block">
           {nav.map(({ i: Icon, l, a }) => (
             <div
               key={l}
               className={`mb-0.5 flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm ${
-                a ? "bg-accent/10 font-medium text-accent" : "text-text-muted"
+                a ? "bg-accent-10 font-medium text-accent" : "text-muted-foreground"
               }`}
             >
               <Icon className="size-4" /> {l}
@@ -53,32 +53,32 @@ export function DashboardMock() {
               ["Next payroll", "5 days"],
             ].map(([k, v]) => (
               <div key={k} className="rounded-lg border border-border p-3">
-                <p className="text-xs text-text-muted">{k}</p>
+                <p className="text-xs text-muted-foreground">{k}</p>
                 <p className="mt-1 text-xl font-semibold">{v}</p>
               </div>
             ))}
           </div>
           <div className="mt-3 grid gap-3 lg:grid-cols-5">
             <div className="rounded-lg border border-border p-3 lg:col-span-3">
-              <p className="text-xs font-medium text-text-muted">Attendance, last 12 weeks</p>
+              <p className="text-xs font-medium text-muted-foreground">Attendance, last 12 weeks</p>
               <div className="mt-3 flex h-28 items-end gap-1.5">
                 {bars.map((h, n) => (
                   <div
                     key={n}
                     style={{ height: `${h}%` }}
-                    className={`flex-1 rounded-t ${n === bars.length - 1 ? "bg-accent" : "bg-accent/25"}`}
+                    className={`flex-1 rounded-t ${n === bars.length - 1 ? "bg-accent" : "bg-accent-30"}`}
                   />
                 ))}
               </div>
             </div>
             <div className="rounded-lg border border-border p-3 lg:col-span-2">
-              <p className="text-xs font-medium text-text-muted">Leave requests</p>
+              <p className="text-xs font-medium text-muted-foreground">Leave requests</p>
               <ul className="mt-2 space-y-2">
                 {rows.map(([n, d, s, c]) => (
                   <li key={n} className="flex items-center justify-between text-xs">
                     <span>
                       <span className="font-medium">{n}</span>
-                      <span className="block text-text-muted">{d}</span>
+                      <span className="block text-muted-foreground">{d}</span>
                     </span>
                     <span className={`font-medium ${c}`}>{s}</span>
                   </li>

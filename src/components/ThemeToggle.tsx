@@ -15,7 +15,7 @@ export function ThemeToggle() {
         setDark(next);
         localStorage.setItem("theme", next ? "dark" : "light");
       }}
-      className="inline-flex size-9 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-surface hover:text-text"
+      className="inline-flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
     >
       {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
     </button>
