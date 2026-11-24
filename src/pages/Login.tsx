@@ -43,9 +43,10 @@ function BrandPanel() {
           </small>
         </div>
         <h1 className="mt-8 text-4xl font-semibold leading-[1.05] tracking-tight xl:text-[54px]">
-          myOfficeHRM
+          myOffice<span className="text-accent-30">HRM.</span>
           <br />
-          <span className="text-accent-30">&amp; Payroll</span>
+          <span className="text-4xl font-medium text-accent-30">&amp; payroll</span>
+          <span className="ml-2.5 text-sm font-normal text-primary-foreground/50">by MiDee</span>
         </h1>
         <p className="mt-4 max-w-md text-sm leading-relaxed text-primary-foreground/75">
           Clarity for your people operations. Confidence in every process.
