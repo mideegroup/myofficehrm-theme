@@ -1,7 +1,15 @@
 import { NavLink } from "react-router-dom";
-import { ChevronDown, CircleHelp, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { Check, ChevronDown, CircleHelp, LogOut, PanelLeftClose, PanelLeftOpen, Plus } from "lucide-react";
 import { LogoWordmark } from "../Logo";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { toast } from "../ui/sonner";
 import { appNavGroups, type AppNavItem } from "../../lib/nav";
+
+const TENANTS = [
+  { name: "Northstar Group", plan: "Business plan", initial: "N", current: true },
+  { name: "Harbor Clinics", plan: "Starter plan", initial: "H", current: false },
+  { name: "Atlas Retail", plan: "Trial", initial: "A", current: false },
+];
 
 const ITEM_CX =
   "flex h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-medium text-muted-foreground transition-colors";
@@ -110,24 +118,53 @@ export function AppSidebar({
         )}
       </div>
 
-      <button
-        className={`mx-3 mb-1 mt-3 flex h-[52px] items-center gap-2.5 rounded-lg border border-border bg-background px-2.5 text-left text-foreground transition-colors hover:border-accent-30 ${
-          collapsed ? "justify-center px-0" : ""
-        }`}
-      >
-        <span className="grid size-8 shrink-0 place-items-center rounded-md bg-accent-10 text-xs font-extrabold text-accent">
-          N
-        </span>
-        {!collapsed && (
-          <>
-            <span className="min-w-0 flex-1 text-[13px] font-semibold leading-tight">
-              <span className="block truncate">Northstar Group</span>
-              <small className="block text-[10px] font-normal text-muted-foreground">Business plan</small>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            aria-label="Switch workspace"
+            className={`mx-3 mb-1 mt-3 flex h-[52px] items-center gap-2.5 rounded-lg border border-border bg-background px-2.5 text-left text-foreground transition-colors hover:border-accent-30 ${
+              collapsed ? "justify-center px-0" : ""
+            }`}
+          >
+            <span className="grid size-8 shrink-0 place-items-center rounded-md bg-accent-10 text-xs font-extrabold text-accent">
+              N
             </span>
-            <ChevronDown size={15} className="shrink-0 text-muted-foreground" />
-          </>
-        )}
-      </button>
+            {!collapsed && (
+              <>
+                <span className="min-w-0 flex-1 text-[13px] font-semibold leading-tight">
+                  <span className="block truncate">Northstar Group</span>
+                  <small className="block text-[10px] font-normal text-muted-foreground">Business plan</small>
+                </span>
+                <ChevronDown size={15} className="shrink-0 text-muted-foreground" />
+              </>
+            )}
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" side="right" sideOffset={8} className="w-64">
+          <DropdownMenuLabel className="text-[11px] font-bold tracking-wide text-muted-foreground">WORKSPACES</DropdownMenuLabel>
+          {TENANTS.map((t) => (
+            <DropdownMenuItem
+              key={t.name}
+              disabled={t.current}
+              onClick={() => toast(`${t.name} isn't part of the demo`, { description: "Workspace switching is illustrative here." })}
+              className="flex items-center gap-2.5 py-2"
+            >
+              <span className="grid size-7 shrink-0 place-items-center rounded-md bg-accent-10 text-[11px] font-extrabold text-accent">
+                {t.initial}
+              </span>
+              <span className="min-w-0 flex-1 leading-tight">
+                <span className="block truncate text-[13px] font-semibold">{t.name}</span>
+                <small className="block text-[10px] text-muted-foreground">{t.plan}</small>
+              </span>
+              {t.current && <Check size={14} className="shrink-0 text-accent" />}
+            </DropdownMenuItem>
+          ))}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => toast("Workspace creation is part of onboarding", { description: "Not in the demo scope." })} className="gap-2.5">
+            <Plus size={14} /> Create workspace
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <nav aria-label="Application navigation" className="flex-1 overflow-y-auto px-2.5 py-3">
         {appNavGroups.map((group, gi) => (

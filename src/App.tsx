@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Demo from "./pages/Demo";
 import Ui from "./pages/Ui";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
 import { ColourSchemePage } from "./pages/Organization";
@@ -33,6 +34,7 @@ export default function App() {
       <ScrollManager />
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/demo" element={<Demo />} />
 
         {/* Application — AppShell owns chrome, ModuleLayout owns section nav */}

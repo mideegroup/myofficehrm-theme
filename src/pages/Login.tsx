@@ -324,16 +324,9 @@ export default function Login() {
             </label>
 
             <div className="flex justify-end">
-              <a
-                href="#forgot"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setError("Password reset is unavailable in this demo environment.");
-                }}
-                className="text-sm font-medium text-accent hover:underline"
-              >
+              <Link to="/forgot-password" className="text-sm font-medium text-accent hover:underline">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             {error && (
