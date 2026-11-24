@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "../components/app/AppSidebar";
 import { AppHeader } from "../components/app/AppHeader";
+import { CommandPalette } from "../components/app/CommandPalette";
 
 const COLLAPSED_KEY = "mo.sidebar.collapsed";
 
@@ -38,6 +39,7 @@ export function AppShell({ children }: { children?: ReactNode }) {
       )}
       <div className="min-w-0 flex-1">
         <AppHeader onToggleMenu={() => setMobileOpen((o) => !o)} />
+        <CommandPalette />
         <div className="mx-auto w-full max-w-[1600px] px-4 pb-10 pt-5 sm:px-6 lg:px-10">
           <div className="mb-6 flex h-9 items-center justify-between gap-4 rounded-lg border border-accent-30/60 bg-accent-10/60 px-3 text-[11px] text-accent">
             <span className="flex items-center gap-2 font-bold tracking-[0.06em]">

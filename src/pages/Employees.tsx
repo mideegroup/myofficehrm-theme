@@ -16,6 +16,7 @@ import { EmptyState } from "../components/app/EmptyState";
 import { Pagination } from "../components/app/Pagination";
 import { TableSkeleton } from "../components/app/TableSkeleton";
 import { UnsavedChangesDialog } from "../components/app/UnsavedChangesDialog";
+import { SortableHead } from "../components/app/SortableHead";
 import { toast } from "../components/ui/sonner";
 import { employees, type Employee } from "../lib/employees";
 
@@ -62,7 +63,9 @@ export default function Employees() {
   const [type, setType] = useState("");
   const [selected, setSelected] = useState<Employee | null>(null);
   const [page, setPage] = useState(1);
-  const [sortAsc, setSortAsc] = useState(true);
+  const [sort, setSort] = useState<{ key: string; dir: "asc" | "desc" }>({ key: "last", dir: "asc" });
+  const onSort = (key: string) =>
+    setSort((s) => ({ key, dir: s.key === key && s.dir === "asc" ? "desc" : "asc" }));
   const [tab, setTab] = useState("Profile");
   // Simulated fetch latency — the loading pattern every list screen follows:
   // skeleton rows while data loads, EmptyState when a filter yields nothing.
@@ -85,8 +88,14 @@ export default function Employees() {
             (!status || p.status === status) &&
             (!type || p.type === type),
         )
-        .sort((a, b) => (sortAsc ? a.last.localeCompare(b.last) : b.last.localeCompare(a.last))),
-    [query, department, location, status, type, sortAsc],
+        .sort((a, b) => {
+          const key = sort.key as keyof Employee;
+          const av = key === "hire" ? Date.parse(a.hire) : String(a[key] ?? "");
+          const bv = key === "hire" ? Date.parse(b.hire) : String(b[key] ?? "");
+          const cmp = typeof av === "number" ? av - (bv as number) : av.localeCompare(String(bv));
+          return sort.dir === "asc" ? cmp : -cmp;
+        }),
+    [query, department, location, status, type, sort],
   );
 
   const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -164,7 +173,7 @@ export default function Employees() {
           )}
           <ChevronDown size={15} />
         </Button>
-        <Button variant="secondary" className="h-10" onClick={() => setSortAsc(!sortAsc)}>
+        <Button variant="secondary" className="h-10" onClick={() => onSort("last")}>
           <SlidersHorizontal size={16} /> Sort
         </Button>
       </div>
@@ -254,19 +263,16 @@ export default function Employees() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-[10px] font-bold tracking-[0.08em]">
-                EMPLOYEE #{" "}
-                <button onClick={() => setSortAsc(!sortAsc)} className="align-middle text-muted-foreground">↕</button>
-              </TableHead>
+              <SortableHead label="EMPLOYEE #" sortKey="id" sort={sort} onSort={onSort} />
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">PHOTO</TableHead>
-              <TableHead className="text-[10px] font-bold tracking-[0.08em]">NAME</TableHead>
+              <SortableHead label="NAME" sortKey="last" sort={sort} onSort={onSort} />
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">EMAIL</TableHead>
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">DEPARTMENT</TableHead>
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">POSITION</TableHead>
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">LOCATION</TableHead>
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">EMPLOYMENT TYPE</TableHead>
               <TableHead className="text-[10px] font-bold tracking-[0.08em]">STATUS</TableHead>
-              <TableHead className="text-[10px] font-bold tracking-[0.08em]">HIRE DATE</TableHead>
+              <SortableHead label="HIRE DATE" sortKey="hire" sort={sort} onSort={onSort} />
               <TableHead />
             </TableRow>
           </TableHeader>

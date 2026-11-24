@@ -6,11 +6,7 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { pageTitleFor } from "../../lib/nav";
-
-const NOTIFICATIONS = [
-  "Payroll review is due in 2 days.",
-  "3 leave requests need your review.",
-];
+import { NotificationList } from "./NotificationList";
 
 export function AppHeader({ onToggleMenu }: { onToggleMenu: () => void }) {
   const { pathname } = useLocation();
@@ -34,17 +30,16 @@ export function AppHeader({ onToggleMenu }: { onToggleMenu: () => void }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <label className="hidden h-9 w-60 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-muted-foreground transition-colors focus-within:ring-2 focus-within:ring-ring md:flex">
+        <button
+          onClick={() => window.dispatchEvent(new Event("moh:command-palette"))}
+          className="hidden h-9 w-60 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-muted-foreground transition-colors hover:border-accent-30 hover:text-foreground md:flex"
+        >
           <Search size={16} />
-          <input
-            placeholder="Search anything..."
-            aria-label="Search anything"
-            className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-          />
+          <span className="min-w-0 flex-1 text-left text-sm">Search anything...</span>
           <kbd className="rounded border border-border px-1.5 py-0.5 text-[9px] text-muted-foreground">
             ⌘ K
           </kbd>
-        </label>
+        </button>
 
         <button
           aria-label="Help"
@@ -63,14 +58,9 @@ export function AppHeader({ onToggleMenu }: { onToggleMenu: () => void }) {
               <i className="absolute right-2 top-2 size-1.5 rounded-full bg-destructive" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-64 p-3">
+          <DropdownMenuContent align="end" className="w-80 p-3">
             <DropdownMenuLabel className="text-sm font-semibold">Notifications</DropdownMenuLabel>
-            {NOTIFICATIONS.map((n) => (
-              <DropdownMenuItem key={n} className="flex items-start gap-2 py-2 text-xs">
-                <i className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="leading-snug">{n}</span>
-              </DropdownMenuItem>
-            ))}
+            <NotificationList />
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -91,7 +81,7 @@ export function AppHeader({ onToggleMenu }: { onToggleMenu: () => void }) {
             <DropdownMenuLabel className="text-sm font-semibold">Olivia Chen</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/settings">Account settings</Link>
+              <Link to="/profile">Account settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/">Exit demo environment</Link>

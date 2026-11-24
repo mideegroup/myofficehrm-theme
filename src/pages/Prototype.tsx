@@ -16,7 +16,11 @@ import { DatePicker } from "../components/ui/date-picker";
 import { FileUpload } from "../components/ui/file-upload";
 import { Field } from "../components/ui/field";
 import { Alert } from "../components/ui/alert";
-import { Trash2, PanelRight, CheckCircle2, ArrowLeft, ArrowRight, Pencil } from "lucide-react";
+import { NotificationList } from "../components/app/NotificationList";
+import { SortableHead } from "../components/app/SortableHead";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+import { Trash2, PanelRight, CheckCircle2, ArrowLeft, ArrowRight, Pencil, Command, LogOut, Monitor } from "lucide-react";
 
 const DEMO_RECORD: [string, string][] = [
   ["Record ID", "LR-2041"],
@@ -471,6 +475,209 @@ export function BannersPage() {
         <Alert tone="success" title="Import complete">
           24 of 25 employees imported. 1 row skipped (missing email).
         </Alert>
+      </section>
+    </div>
+  );
+}
+
+/** Prototype → Command palette. ⌘K/Ctrl-K navigation over nav-as-data — opened
+ *  by the header search, the chord, or this button (window event). */
+export function CommandPalettePage() {
+  return (
+    <div className="flex max-w-[720px] flex-col gap-6">
+      <PageIntro
+        eyebrow="PROTOTYPE · BACKLOG"
+        title="Command palette"
+        description="Flat jump-to-page navigation generated from appNavGroups — it can never drift from the menu."
+      />
+      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <h2 className="text-[11px] font-bold tracking-[0.1em] text-accent">HOW TO OPEN</h2>
+        <ul className="mt-3 space-y-2 text-[13px] text-muted-foreground">
+          <li className="flex items-center gap-2"><Command size={14} /> Press <kbd className="rounded border border-border px-1.5 py-0.5 text-[10px]">Ctrl K</kbd> (or ⌘K) anywhere in the app</li>
+          <li className="flex items-center gap-2"><PanelRight size={14} /> Click the header search box</li>
+          <li className="flex items-center gap-2"><ArrowRight size={14} /> Arrow keys move, Enter navigates, Esc closes</li>
+        </ul>
+        <Button
+          className="mt-5 bg-accent-70 font-bold hover:bg-accent-90"
+          onClick={() => window.dispatchEvent(new Event("moh:command-palette"))}
+        >
+          <Command size={15} /> Open command palette
+        </Button>
+      </section>
+    </div>
+  );
+}
+
+/** Prototype → Notifications. The same NotificationList the header bell
+ *  dropdown renders — one component, two surfaces. */
+export function NotificationsPage() {
+  return (
+    <div className="flex max-w-[720px] flex-col gap-6">
+      <PageIntro
+        eyebrow="PROTOTYPE · BACKLOG"
+        title="Notifications panel"
+        description="Typed notification rows — icon, text, time, unread dot. Live in the header bell dropdown."
+      />
+      <section className="w-full max-w-sm rounded-xl border border-border bg-card p-3 shadow-sm">
+        <h2 className="px-2.5 pb-1 text-sm font-semibold">Notifications</h2>
+        <NotificationList />
+      </section>
+    </div>
+  );
+}
+
+/** Prototype → User profile & settings. The account surface the header user
+ *  menu links to (/profile) — profile fields, password change, sessions. */
+export function UserProfilePage() {
+  const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
+  const pwError =
+    pw.next && pw.confirm && pw.next !== pw.confirm ? "Passwords don't match." :
+    pw.next && pw.next.length < 8 ? "Use at least 8 characters." : undefined;
+
+  return (
+    <div className="flex max-w-[720px] flex-col gap-6">
+      <PageIntro eyebrow="ACCOUNT" title="Profile & settings" description="Your account details — separate from workspace administration." />
+
+      <section className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex items-center gap-4 border-b border-border p-5">
+          <Avatar initials="OC" size="lg" className="size-16 text-lg" />
+          <div>
+            <h2 className="text-lg font-semibold tracking-tight">Olivia Chen</h2>
+            <p className="text-sm text-muted-foreground">HR Administrator · Northstar Group</p>
+          </div>
+        </div>
+        <div className="grid gap-4 p-5 sm:grid-cols-2">
+          <Field label="Full name" htmlFor="up-name"><Input id="up-name" defaultValue="Olivia Chen" /></Field>
+          <Field label="Work email" htmlFor="up-email"><Input id="up-email" type="email" defaultValue="olivia.chen@northstar.example" /></Field>
+          <Field label="Phone" htmlFor="up-phone"><Input id="up-phone" defaultValue="+61 4 12 345 678" /></Field>
+          <Field label="Job title" htmlFor="up-title"><Input id="up-title" defaultValue="HR Administrator" /></Field>
+        </div>
+        <div className="flex justify-end border-t border-border p-5">
+          <Button className="bg-accent-70 font-bold hover:bg-accent-90" onClick={() => toast.success("Profile saved")}>Save profile</Button>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="text-[11px] font-bold tracking-[0.1em] text-accent">CHANGE PASSWORD</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <Field label="Current" htmlFor="pw-cur"><Input id="pw-cur" type="password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} /></Field>
+          <Field label="New" htmlFor="pw-new" error={pwError}><Input id="pw-new" type="password" value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} /></Field>
+          <Field label="Confirm" htmlFor="pw-conf"><Input id="pw-conf" type="password" value={pw.confirm} onChange={(e) => setPw({ ...pw, confirm: e.target.value })} /></Field>
+        </div>
+        <div className="mt-4 flex justify-end">
+          <Button variant="secondary" disabled={!pw.current || !pw.next || !!pwError} onClick={() => { setPw({ current: "", next: "", confirm: "" }); toast.success("Password updated"); }}>
+            Update password
+          </Button>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="text-[11px] font-bold tracking-[0.1em] text-accent">ACTIVE SESSIONS</h2>
+        <div className="mt-3 space-y-2">
+          {[
+            ["This device", "Windows · Edge · Melbourne", true],
+            ["iPhone 15", "Safari · Melbourne", false],
+          ].map(([name, detail, current]) => (
+            <div key={name as string} className="flex items-center gap-3 rounded-lg border border-border px-3.5 py-2.5">
+              <Monitor size={16} className="text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-[13px] font-semibold">{name} {current ? <span className="ml-1 text-[10px] font-bold text-accent">· CURRENT</span> : null}</p>
+                <p className="text-xs text-muted-foreground">{detail}</p>
+              </div>
+              {!current && <Button variant="ghost" className="h-8 px-2.5 text-xs">Revoke</Button>}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 border-t border-border pt-4">
+          <Button variant="secondary" onClick={() => toast("Signed out everywhere else")}><LogOut size={14} /> Sign out of all other sessions</Button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const SORT_DEMO = [
+  { name: "Ava Mitchell", dept: "People & Culture", hired: "12 Feb 2021" },
+  { name: "Noah Williams", dept: "Engineering", hired: "03 May 2022" },
+  { name: "Jack Anderson", dept: "Engineering", hired: "08 Oct 2024" },
+  { name: "Zoe Clark", dept: "People & Culture", hired: "30 Jun 2019" },
+];
+
+/** Prototype → Sortable headers. The table-header sort pattern — adopted on
+ *  the employees table (EMPLOYEE #, NAME, HIRE DATE). */
+export function SortableHeadersPage() {
+  const [sort, setSort] = useState<{ key: string; dir: "asc" | "desc" }>({ key: "name", dir: "asc" });
+  const onSort = (key: string) => setSort((s) => ({ key, dir: s.key === key && s.dir === "asc" ? "desc" : "asc" }));
+  const rows = [...SORT_DEMO].sort((a, b) => {
+    const av = sort.key === "hired" ? Date.parse(a.hired) : a[sort.key as "name" | "dept"];
+    const bv = sort.key === "hired" ? Date.parse(b.hired) : b[sort.key as "name" | "dept"];
+    const cmp = typeof av === "number" ? av - (bv as number) : av.localeCompare(String(bv));
+    return sort.dir === "asc" ? cmp : -cmp;
+  });
+
+  return (
+    <div className="flex max-w-[720px] flex-col gap-6">
+      <PageIntro
+        eyebrow="PROTOTYPE · BACKLOG"
+        title="Sortable column headers"
+        description="SortableHead — click cycles asc/desc, arrow shows state, aria-sort for screen readers."
+      />
+      <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <SortableHead label="NAME" sortKey="name" sort={sort} onSort={onSort} />
+              <SortableHead label="DEPARTMENT" sortKey="dept" sort={sort} onSort={onSort} />
+              <SortableHead label="HIRE DATE" sortKey="hired" sort={sort} onSort={onSort} />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((r) => (
+              <TableRow key={r.name}>
+                <TableCell className="font-semibold">{r.name}</TableCell>
+                <TableCell>{r.dept}</TableCell>
+                <TableCell>{r.hired}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </section>
+    </div>
+  );
+}
+
+const DARK_CHECKS = [
+  "Status pills — all 5 tones on .dark tokens",
+  "Banners — status-token tinted, dark pairs verified",
+  "Sheet + dialogs — popover/card tokens",
+  "Tables, skeleton, pagination",
+  "Login & demo brand panels — accent-driven",
+  "Toasts — richColors (sonner palette, not tokens)",
+];
+
+/** Prototype → Dark mode QA. Live check — toggle .dark and inspect the
+ *  surfaces above; anything painted in tokens follows automatically. */
+export function DarkModePage() {
+  return (
+    <div className="flex max-w-[720px] flex-col gap-6">
+      <PageIntro
+        eyebrow="PROTOTYPE · BACKLOG"
+        title="Dark-mode QA pass"
+        description="Surfaces verified against .dark tokens — toggle and spot-check."
+      />
+      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-[11px] font-bold tracking-[0.1em] text-accent">VERIFIED SURFACES</h2>
+          <ThemeToggle />
+        </div>
+        <ul className="mt-4 space-y-2.5">
+          {DARK_CHECKS.map((c) => (
+            <li key={c} className="flex items-start gap-2.5 text-[13px]">
+              <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-status-success-foreground" />
+              {c}
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );

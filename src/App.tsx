@@ -13,7 +13,7 @@ import { ModuleOptionsPage, ModulePlaceholder } from "./pages/ModuleOptionsPage"
 import ErrorPage from "./pages/ErrorPage";
 import TwoFactorPage from "./pages/TwoFactor";
 import StatusesPage from "./pages/Statuses";
-import { BannersPage, DatePickerPage, FileUploadPage, MultiStepPage, OverlaysPage, TabsPage, ToastsPage } from "./pages/Prototype";
+import { BannersPage, CommandPalettePage, DarkModePage, DatePickerPage, FileUploadPage, MultiStepPage, NotificationsPage, OverlaysPage, SortableHeadersPage, TabsPage, ToastsPage, UserProfilePage } from "./pages/Prototype";
 import { AppShell } from "./layouts/AppShell";
 import { ModuleLayout } from "./layouts/ModuleLayout";
 import { moduleNavItems } from "./lib/nav";
@@ -39,6 +39,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
+          <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/organization" element={<ModuleLayout title="ORGANIZATION" items={moduleNavItems("Organization")} />}>
             <Route index element={<Navigate to="company" replace />} />
             <Route path="company" element={
@@ -116,9 +117,15 @@ export default function App() {
             <Route path="tabs" element={<TabsPage />} />
             <Route path="toasts" element={<ToastsPage />} />
             <Route path="banners" element={<BannersPage />} />
+            <Route path="colour-scheme" element={<ColourSchemePage />} />
             <Route path="date-picker" element={<DatePickerPage />} />
             <Route path="file-upload" element={<FileUploadPage />} />
             <Route path="multi-step" element={<MultiStepPage />} />
+            <Route path="command-palette" element={<CommandPalettePage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="user-profile" element={<UserProfilePage />} />
+            <Route path="sortable-headers" element={<SortableHeadersPage />} />
+            <Route path="dark-mode" element={<DarkModePage />} />
             <Route path="403" element={<ErrorPage code="403" />} />
             <Route path="404" element={<ErrorPage code="404" />} />
             <Route path="500" element={<ErrorPage code="500" />} />
