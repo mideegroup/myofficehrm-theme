@@ -35,7 +35,7 @@ export function AppHeader({ onToggleMenu }: { onToggleMenu: () => void }) {
           className="hidden h-9 w-60 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-muted-foreground transition-colors hover:border-accent-30 hover:text-foreground md:flex"
         >
           <Search size={16} />
-          <span className="min-w-0 flex-1 text-left text-sm">Search anything...</span>
+          <span className="min-w-0 flex-1 text-left text-sm">Jump to a page...</span>
           <kbd className="rounded border border-border px-1.5 py-0.5 text-[9px] text-muted-foreground">
             ⌘ K
           </kbd>

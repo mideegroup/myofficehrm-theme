@@ -39,6 +39,9 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
+          {/* /profile is the real route (user menu links here); the same page
+              also serves the Prototype → User profile gallery entry — the
+              double mount is intentional, not duplication to "fix". */}
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/organization" element={<ModuleLayout title="ORGANIZATION" items={moduleNavItems("Organization")} />}>
             <Route index element={<Navigate to="company" replace />} />

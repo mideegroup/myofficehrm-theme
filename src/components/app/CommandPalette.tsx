@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CornerDownLeft, Search } from "lucide-react";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { appNavGroups } from "../../lib/nav";
+import { guardedLeave } from "../../lib/navigationGuard";
 import { cn } from "../../lib/utils";
 
 interface Command {
@@ -54,9 +55,13 @@ export function CommandPalette() {
   useEffect(() => setCursor(0), [query, open]);
 
   const run = (c: Command) => {
-    setOpen(false);
-    setQuery("");
-    navigate(c.to);
+    // Route-level navigation consults the screen's dirty guard (lib/navigationGuard)
+    // so palette jumps can't silently discard in-progress edits.
+    guardedLeave(() => {
+      setOpen(false);
+      setQuery("");
+      navigate(c.to);
+    });
   };
 
   return (

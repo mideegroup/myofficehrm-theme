@@ -153,6 +153,7 @@ export const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/employees": "Employee Directory",
   "/organization": "Organization",
+  "/profile": "Profile & settings",
 };
 
 /** Resolve a breadcrumb title for any registered route (falls back to the

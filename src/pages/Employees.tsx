@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity, ArrowUpRight, CalendarCheck, CalendarDays, ChevronDown,
   Download, FileText, Filter, Mail, MoreHorizontal, Pencil, Plus, Search, SlidersHorizontal, Wallet, X,
@@ -19,6 +19,7 @@ import { UnsavedChangesDialog } from "../components/app/UnsavedChangesDialog";
 import { SortableHead } from "../components/app/SortableHead";
 import { toast } from "../components/ui/sonner";
 import { employees, type Employee } from "../lib/employees";
+import { setNavigationGuard } from "../lib/navigationGuard";
 
 const PAGE_SIZE = 8;
 const TABS = ["Profile", "Employment", "Leave", "Payroll", "Documents", "Notes"];
@@ -118,6 +119,15 @@ export default function Employees() {
   const dirty = !!(editing && draft && selected && profileRows(selected).some(([k, v]) => draft[k] !== v));
   const cancelEdit = () => { setEditing(false); setDraft(null); };
   const guard = (leave: () => void) => { if (dirty) setPendingLeave(() => leave); else leave(); };
+
+  // Register this screen's guard globally so route-level navigators (the ⌘K
+  // palette, future menu links) defer to the same dialog instead of bypassing it.
+  const dirtyRef = useRef(dirty);
+  dirtyRef.current = dirty;
+  useEffect(() => {
+    setNavigationGuard((leave) => { if (dirtyRef.current) setPendingLeave(() => leave); else leave(); });
+    return () => setNavigationGuard(null);
+  }, []);
   const startEdit = (rows: [string, string][]) => {
     setDraft(Object.fromEntries(rows));
     setEditing(true);
@@ -377,7 +387,7 @@ export default function Employees() {
               )}
             </div>
 
-            <Tabs value={tab} onValueChange={(v) => { setTab(v); cancelEdit(); }}>
+            <Tabs value={tab} onValueChange={(v) => guard(() => { setTab(v); cancelEdit(); })}>
               <TabsList className="flex gap-5 overflow-x-auto rounded-none border-b border-border bg-transparent p-0 px-5">
                 {TABS.map((x) => (
                   <TabsTrigger

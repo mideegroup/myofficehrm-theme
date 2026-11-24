@@ -21,10 +21,12 @@ export function SortableHead({
   const active = sort.key === sortKey;
   const Icon = active ? (sort.dir === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
   return (
-    <TableHead className={className ?? "text-[10px] font-bold tracking-[0.08em]"}>
+    <TableHead
+      className={className ?? "text-[10px] font-bold tracking-[0.08em]"}
+      aria-sort={active ? (sort.dir === "asc" ? "ascending" : "descending") : "none"}
+    >
       <button
         onClick={() => onSort(sortKey)}
-        aria-sort={active ? (sort.dir === "asc" ? "ascending" : "descending") : "none"}
         className={`inline-flex items-center gap-1 transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
       >
         {label}
