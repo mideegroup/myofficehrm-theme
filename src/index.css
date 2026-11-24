@@ -125,6 +125,16 @@
    virtual:schemes.css. Per-mode blocks mean scheme selection and dark
    mode compose freely; never write inline --accent-* overrides. */
 
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@utility animate-drawer-in {
+  animation: drawer-in 0.2s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .animate-drawer-in { animation: none; }
 }

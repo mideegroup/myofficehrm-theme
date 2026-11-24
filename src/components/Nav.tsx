@@ -54,7 +54,7 @@ export function Nav() {
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           <ThemeToggle />
-          <Button variant="ghost" href="https://demo.myofficehrm.com/login" className="hidden sm:inline-flex">Log in</Button>
+          <Button variant="ghost" to="/login" className="hidden sm:inline-flex">Log in</Button>
           <Button to="/demo" className="hidden sm:inline-flex">Try demo</Button>
           <button
             type="button"
@@ -81,7 +81,7 @@ export function Nav() {
             <StarBadge />
           </div>
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <Button variant="secondary" href="https://demo.myofficehrm.com/login">Log in</Button>
+            <Button variant="secondary" to="/login">Log in</Button>
             <Button to="/demo" onClick={() => setOpen(false)}>Try demo</Button>
           </div>
         </div>

@@ -12,14 +12,15 @@ export function LogoFull({ className = "" }: { className?: string }) {
   );
 }
 
-export function LogoWordmark({ className = "" }: { className?: string }) {
+export function LogoWordmark({ className = "", inverse = false }: { className?: string; inverse?: boolean }) {
   return (
     <Link
       to="/"
       aria-label="myOfficeHRM home"
-      className={`rounded text-lg font-bold tracking-tight text-foreground ${className}`}
+      className={`rounded text-lg font-bold tracking-tight ${inverse ? "text-primary-foreground" : "text-foreground"} ${className}`}
     >
-      myOffice<span className="text-accent">HRM</span>
+      myOffice<span className={inverse ? "text-accent-30" : "text-accent"}>HRM</span>
+      <span className={inverse ? "text-accent-30" : "text-accent"}>.</span>
     </Link>
   );
 }

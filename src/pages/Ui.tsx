@@ -62,6 +62,7 @@ export default function Ui() {
             <Button variant="secondary">Secondary</Button>
             <Button variant="destructive">Destructive</Button>
             <Button variant="ghost">Ghost</Button>
+            <Button variant="cta">Call to action</Button>
           </Row>
           <Row label="Sizes">
             <Button size="sm">Small</Button>

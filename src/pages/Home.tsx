@@ -46,10 +46,10 @@ function Hero() {
             let us host it. Your HR data stays yours.
           </p>
           <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-            <Button to="/demo" size="lg">
+            <Button to="/demo" variant="cta">
               Try the demo <ArrowRight className="size-4" />
             </Button>
-            <Button href={GITHUB_URL} variant="secondary" size="lg">
+            <Button href={GITHUB_URL} variant="cta-secondary">
               <GithubIcon className="size-4" /> Star on GitHub
             </Button>
           </div>
