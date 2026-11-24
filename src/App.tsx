@@ -10,6 +10,10 @@ import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
 import { ColourSchemePage } from "./pages/Organization";
 import { ModuleOptionsPage, ModulePlaceholder } from "./pages/ModuleOptionsPage";
+import ErrorPage from "./pages/ErrorPage";
+import TwoFactorPage from "./pages/TwoFactor";
+import StatusesPage from "./pages/Statuses";
+import { BannersPage, DatePickerPage, FileUploadPage, MultiStepPage, OverlaysPage, TabsPage, ToastsPage } from "./pages/Prototype";
 import { AppShell } from "./layouts/AppShell";
 import { ModuleLayout } from "./layouts/ModuleLayout";
 import { moduleNavItems } from "./lib/nav";
@@ -100,13 +104,30 @@ export default function App() {
                 description="How long inactive sessions stay signed in."
                 optionKeys={["Session timeout"]} />
             } />
-            <Route path="two-factor" element={
-              <ModuleOptionsPage eyebrow="SECURITY" title="Two-factor authentication"
-                description="Additional verification required at sign in."
-                optionKeys={["Two-factor authentication"]} />
-            } />
+            <Route path="two-factor" element={<TwoFactorPage />} />
             <Route path="sso" element={<ModulePlaceholder eyebrow="SECURITY" title="SSO" />} />
           </Route>
+
+          {/* Design-pattern surfaces — status catalog + full-page errors */}
+          <Route path="/prototype" element={<ModuleLayout title="PROTOTYPE" items={moduleNavItems("Prototype")} />}>
+            <Route index element={<Navigate to="statuses" replace />} />
+            <Route path="statuses" element={<StatusesPage />} />
+            <Route path="overlays" element={<OverlaysPage />} />
+            <Route path="tabs" element={<TabsPage />} />
+            <Route path="toasts" element={<ToastsPage />} />
+            <Route path="banners" element={<BannersPage />} />
+            <Route path="date-picker" element={<DatePickerPage />} />
+            <Route path="file-upload" element={<FileUploadPage />} />
+            <Route path="multi-step" element={<MultiStepPage />} />
+            <Route path="403" element={<ErrorPage code="403" />} />
+            <Route path="404" element={<ErrorPage code="404" />} />
+            <Route path="500" element={<ErrorPage code="500" />} />
+          </Route>
+
+          {/* Real error routes — the prototype pages above are the gallery previews */}
+          <Route path="/403" element={<ErrorPage code="403" />} />
+          <Route path="/404" element={<ErrorPage code="404" />} />
+          <Route path="/500" element={<ErrorPage code="500" />} />
         </Route>
 
         <Route

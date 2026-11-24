@@ -3,18 +3,28 @@ import {
   ChevronDown, ChevronLeft, ChevronRight, Clock3, MoreHorizontal, Plus, UserRound, Users, Wallet,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
-import { Button } from "../components/Button";
+import { useEffect, useState, type ReactNode } from "react";
+import { Button } from "../components/ui/button";
+import { StatusPill } from "../components/app/StatusPill";
 import { PageIntro } from "../components/app/PageIntro";
+import { Skeleton } from "../components/ui/skeleton";
+import { avatarTintCycle, chartSwatches, decorativeTints } from "../lib/tints";
 
-const TINTS: Record<string, string> = {
-  default: "bg-accent-10 text-accent",
-  lavender: "bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300",
-  amber: "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300",
-  blue: "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300",
-  rose: "bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300",
-  mint: "bg-teal-100 text-teal-700 dark:bg-teal-400/15 dark:text-teal-300",
-};
+/** Build the conic-gradient stop list from the enumerated swatches — the
+ *  colors stay in lib/tints.ts, never inline hexes in the page. */
+function conicGradient(rows: readonly (readonly [string, string, string])[]): string {
+  let acc = 0;
+  const stops = rows
+    .map(([, pct, color]) => {
+      const from = acc;
+      acc += parseFloat(pct);
+      return ` % %`;
+    })
+    .join(", ");
+  return `conic-gradient()`;
+}
+
+const TINTS = decorativeTints;
 
 function StatCard({
   icon: Icon, label, value, change, tint = "default",
@@ -69,11 +79,11 @@ const STATS: { icon: LucideIcon; label: string; value: string; change: ReactNode
 ];
 
 const DEPARTMENTS = [
-  ["Engineering", "32%", "#397d62"],
-  ["People & Culture", "21%", "#83ad94"],
-  ["Operations", "18%", "#bdd2b7"],
-  ["Finance", "16%", "#d7c89e"],
-  ["Other", "13%", "#dfe9df"],
+  ["Engineering", "32%", chartSwatches[0]],
+  ["People & Culture", "21%", chartSwatches[1]],
+  ["Operations", "18%", chartSwatches[2]],
+  ["Finance", "16%", chartSwatches[3]],
+  ["Other", "13%", chartSwatches[4]],
 ] as const;
 
 const ACTIVITY = [
@@ -83,7 +93,7 @@ const ACTIVITY = [
   ["EN", "Ethan Nguyen", "welcomed a new team member", "New starter · Product team", "Yesterday"],
 ] as const;
 
-const AVATAR_TINTS = ["bg-accent-10 text-accent", "bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300", "bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300", "bg-sky-100 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300"];
+const AVATAR_TINTS = avatarTintCycle;
 
 const EVENTS = [
   ["21", "Mia Thompson", "Marketing · Birthday", "Birthday"],
@@ -101,6 +111,14 @@ const LEAVE_DAYS = [5, 14, 19, 20, 21, 27];
 const MONTH_LABELS = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
 
 export default function Dashboard() {
+  // Same fetch-latency pattern as Employees — stat cards render skeletons
+  // while the snapshot loads.
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const t = window.setTimeout(() => setLoading(false), 650);
+    return () => window.clearTimeout(t);
+  }, []);
+
   return (
     <>
       <PageIntro
@@ -115,9 +133,16 @@ export default function Dashboard() {
       />
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        {STATS.map((s) => (
-          <StatCard key={s.label} {...s} />
-        ))}
+        {loading
+          ? STATS.map((s) => (
+              <article key={s.label} className="flex min-h-[120px] flex-col rounded-xl border border-border bg-card p-4 shadow-sm">
+                <Skeleton className="size-9 rounded-lg" />
+                <Skeleton className="mt-3 h-3 w-20" />
+                <Skeleton className="mt-1.5 h-6 w-14" />
+                <Skeleton className="mt-auto h-3 w-24" />
+              </article>
+            ))
+          : STATS.map((s) => <StatCard key={s.label} {...s} />)}
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[1.45fr_1fr_1fr]">
@@ -174,7 +199,7 @@ export default function Dashboard() {
               className="relative size-36 rounded-full"
               style={{
                 background:
-                  "conic-gradient(#397d62 0 32%, #83ad94 32% 53%, #bdd2b7 53% 71%, #d7c89e 71% 87%, #dfe9df 87% 100%)",
+                  conicGradient(DEPARTMENTS),
               }}
             >
               <div className="absolute inset-[26%] grid place-items-center rounded-full bg-card text-center">
@@ -276,9 +301,7 @@ export default function Dashboard() {
               <b className="block text-sm font-semibold">On track for payday</b>
               <small className="text-xs text-muted-foreground">Payroll closes in 2 days · 22 May</small>
             </div>
-            <span className="rounded-full bg-accent-10 px-2.5 py-1 text-[10px] font-bold text-accent">
-              In progress
-            </span>
+            <StatusPill status="In progress" />
           </div>
           <div className="mt-4 flex items-center gap-2.5">
             <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">

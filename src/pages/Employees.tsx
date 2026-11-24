@@ -1,14 +1,22 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
-  Activity, ArrowUpRight, CalendarCheck, CalendarDays, ChevronDown, ChevronLeft, ChevronRight,
-  Download, FileText, Filter, Mail, MoreHorizontal, Plus, Search, SlidersHorizontal, Wallet, X,
+  Activity, ArrowUpRight, CalendarCheck, CalendarDays, ChevronDown,
+  Download, FileText, Filter, Mail, MoreHorizontal, Pencil, Plus, Search, SlidersHorizontal, Wallet, X,
   type LucideIcon,
 } from "lucide-react";
-import { Button } from "../components/Button";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Avatar } from "../components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Sheet, SheetCloseButton, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../components/ui/sheet";
 import { PageIntro } from "../components/app/PageIntro";
+import { StatusPill } from "../components/app/StatusPill";
+import { EmptyState } from "../components/app/EmptyState";
+import { Pagination } from "../components/app/Pagination";
+import { TableSkeleton } from "../components/app/TableSkeleton";
+import { UnsavedChangesDialog } from "../components/app/UnsavedChangesDialog";
+import { toast } from "../components/ui/sonner";
 import { employees, type Employee } from "../lib/employees";
 
 const PAGE_SIZE = 8;
@@ -18,20 +26,17 @@ const SELECT_CX =
   "h-9 w-full rounded-lg border border-input bg-background px-2.5 text-sm text-foreground shadow-sm " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-const STATUS_STYLES: Record<Employee["status"], string> = {
-  Active: "bg-accent-10 text-accent [&_i]:bg-accent",
-  "On leave": "bg-amber-100 text-amber-700 [&_i]:bg-amber-500 dark:bg-amber-400/15 dark:text-amber-300",
-  Probation: "bg-sky-100 text-sky-700 [&_i]:bg-sky-500 dark:bg-sky-400/15 dark:text-sky-300",
-};
-
-function StatusPill({ status }: { status: Employee["status"] }) {
-  return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${STATUS_STYLES[status]}`}>
-      <i className="size-1.5 rounded-full" />
-      {status}
-    </span>
-  );
-}
+const profileRows = (p: Employee): [string, string][] => [
+  ["Employee number", p.id],
+  ["Email address", `${p.first.toLowerCase()}.${p.last.toLowerCase()}@northstar.example`],
+  ["Phone number", "+61 4 12 345 678"],
+  ["Department", p.dept],
+  ["Manager", "Olivia Chen"],
+  ["Emergency contact", "Jordan Mitchell · +61 4 98 765 432"],
+  ["Location", `${p.loc}, Australia`],
+  ["Start date", p.hire],
+  ["Salary band", "Band 4 · $90k–$110k"],
+];
 
 function Insight({ icon: Icon, title, detail }: { icon: LucideIcon; title: string; detail: string }) {
   return (
@@ -59,6 +64,13 @@ export default function Employees() {
   const [page, setPage] = useState(1);
   const [sortAsc, setSortAsc] = useState(true);
   const [tab, setTab] = useState("Profile");
+  // Simulated fetch latency — the loading pattern every list screen follows:
+  // skeleton rows while data loads, EmptyState when a filter yields nothing.
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const t = window.setTimeout(() => setLoading(false), 700);
+    return () => window.clearTimeout(t);
+  }, []);
 
   const filtered = useMemo(
     () =>
@@ -77,7 +89,6 @@ export default function Employees() {
     [query, department, location, status, type, sortAsc],
   );
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const activeFilters: [string, string, (v: string) => void][] = [
     [department, "Department", setDepartment],
@@ -89,10 +100,25 @@ export default function Employees() {
   const reset = () => {
     setQuery(""); setDepartment(""); setLocation(""); setStatus(""); setType(""); setPage(1);
   };
-  const openProfile = (p: Employee) => {
-    setSelected(p);
-    setTab("Profile");
+  // Read-by-default, edit-in-place: the record-sheet convention — Edit turns the
+  // detail rows into inputs; Save commits (toast) and returns to view mode.
+  // Leaving mid-edit (another record, closing the sheet) goes through the guard.
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState<Record<string, string> | null>(null);
+  const [pendingLeave, setPendingLeave] = useState<(() => void) | null>(null);
+  const dirty = !!(editing && draft && selected && profileRows(selected).some(([k, v]) => draft[k] !== v));
+  const cancelEdit = () => { setEditing(false); setDraft(null); };
+  const guard = (leave: () => void) => { if (dirty) setPendingLeave(() => leave); else leave(); };
+  const startEdit = (rows: [string, string][]) => {
+    setDraft(Object.fromEntries(rows));
+    setEditing(true);
   };
+  const saveEdit = () => {
+    cancelEdit();
+    toast.success("Profile updated", { description: `${selected?.first} ${selected?.last}'s details were saved.` });
+  };
+  const openProfile = (p: Employee) =>
+    guard(() => { setSelected(p); setTab("Profile"); cancelEdit(); });
 
   const departments = [...new Set(employees.map((x) => x.dept))].sort();
   const locations = [...new Set(employees.map((x) => x.loc))].sort();
@@ -245,7 +271,17 @@ export default function Employees() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {shown.map((p, i) => (
+            {loading && (
+              <TableSkeleton
+                rows={PAGE_SIZE}
+                cells={[
+                  "h-4 w-12", "size-7 rounded-full", "h-4 w-24", "h-3.5 w-40", "h-3.5 w-20",
+                  "h-3.5 w-24", "h-3.5 w-14", "h-3.5 w-14", "h-5 w-16 rounded-full",
+                  "h-3.5 w-16", "size-6 rounded-md",
+                ]}
+              />
+            )}
+            {!loading && shown.map((p, i) => (
               <TableRow
                 key={p.id}
                 tabIndex={0}
@@ -276,79 +312,42 @@ export default function Employees() {
                 </TableCell>
               </TableRow>
             ))}
-            {shown.length === 0 && (
+            {!loading && shown.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={11} className="py-14 text-center">
-                  <Search size={21} className="mx-auto text-muted-foreground" />
-                  <b className="mt-2 block text-sm font-semibold">No employees found</b>
-                  <span className="text-xs text-muted-foreground">Try adjusting your search or filters.</span>
+                <TableCell colSpan={11}>
+                  <EmptyState
+                    icon={Search}
+                    title="No employees found"
+                    description="Try adjusting your search or filters."
+                    action={
+                      <Button variant="secondary" onClick={reset}>Clear filters</Button>
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
 
-        <div className="flex items-center justify-between border-t border-border px-4 py-3 text-xs text-muted-foreground">
-          <span>
-            Showing <b className="text-foreground">{filtered.length ? (page - 1) * PAGE_SIZE + 1 : 0}–{Math.min(page * PAGE_SIZE, filtered.length)}</b> of{" "}
-            <b className="text-foreground">{filtered.length}</b> employees
-          </span>
-          <div className="flex items-center gap-1">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-              aria-label="Previous page"
-              className="grid size-7 place-items-center rounded-md border border-border text-muted-foreground transition-colors enabled:hover:bg-muted disabled:opacity-40"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={`grid size-7 place-items-center rounded-md border text-xs font-medium transition-colors ${
-                  page === i + 1
-                    ? "border-accent-30 bg-accent-10 font-bold text-accent"
-                    : "border-border text-muted-foreground hover:bg-muted"
-                }`}
-              >
-                {i + 1}
-              </button>
-            )).slice(0, 4)}
-            {totalPages > 4 && <span className="px-1">…</span>}
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-              aria-label="Next page"
-              className="grid size-7 place-items-center rounded-md border border-border text-muted-foreground transition-colors enabled:hover:bg-muted disabled:opacity-40"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
+        <Pagination
+          page={page}
+          total={filtered.length}
+          pageSize={PAGE_SIZE}
+          onPage={setPage}
+          itemLabel="employees"
+          loading={loading}
+        />
       </section>
 
-      {selected && (
-        <>
-          <div
-            className="fixed inset-0 z-40 bg-foreground/40"
-            onClick={() => setSelected(null)}
-            aria-hidden="true"
-          />
-          <aside
-            aria-label={`Employee profile for ${selected.first} ${selected.last}`}
-            className="animate-drawer-in fixed right-0 top-0 z-50 flex h-screen w-[min(470px,100%)] flex-col bg-card shadow-lg"
-          >
-            <div className="flex items-center justify-between border-b border-border px-5 py-3.5">
-              <span className="text-[11px] font-bold tracking-[0.12em] text-muted-foreground">EMPLOYEE PROFILE</span>
-              <button
-                onClick={() => setSelected(null)}
-                aria-label="Close employee profile"
-                className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <X size={19} />
-              </button>
-            </div>
+      <Sheet open={!!selected} onOpenChange={(open) => { if (!open) guard(() => { setSelected(null); cancelEdit(); }); }}>
+        <SheetContent aria-describedby={undefined} className="w-[min(540px,100%)]">
+          {selected && (
+            <>
+            <SheetHeader>
+              <SheetTitle>EMPLOYEE PROFILE</SheetTitle>
+              <SheetDescription>Employee profile for {selected.first} {selected.last}</SheetDescription>
+              <SheetCloseButton />
+            </SheetHeader>
 
             <div className="flex flex-col items-center border-b border-border px-5 py-6 text-center">
               <Avatar initials={selected.initials} size="lg" className="size-16 text-lg" />
@@ -357,33 +356,34 @@ export default function Employees() {
               </h2>
               <p className="mt-0.5 text-sm text-muted-foreground">{selected.title}</p>
               <span className="mt-2.5"><StatusPill status={selected.status} /></span>
-              <div className="mt-4 flex gap-2">
-                <Button variant="secondary" className="h-9">
-                  <Mail size={16} /> Message
-                </Button>
-                <Button variant="secondary" className="h-9 px-2.5">
-                  <MoreHorizontal size={17} />
-                </Button>
-              </div>
+              {!editing && (
+                <div className="mt-4 flex gap-2">
+                  <Button variant="secondary" className="h-9" onClick={() => startEdit(profileRows(selected))}>
+                    <Pencil size={15} /> Edit
+                  </Button>
+                  <Button variant="secondary" className="h-9">
+                    <Mail size={16} /> Message
+                  </Button>
+                  <Button variant="secondary" className="h-9 px-2.5">
+                    <MoreHorizontal size={17} />
+                  </Button>
+                </div>
+              )}
             </div>
 
-            <div role="tablist" className="flex gap-5 overflow-x-auto border-b border-border px-5">
-              {TABS.map((x) => (
-                <button
-                  role="tab"
-                  aria-selected={tab === x}
-                  key={x}
-                  onClick={() => setTab(x)}
-                  className={`h-10 whitespace-nowrap border-b-2 text-[13px] transition-colors ${
-                    tab === x
-                      ? "border-accent font-bold text-accent"
-                      : "border-transparent font-medium text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {x}
-                </button>
-              ))}
-            </div>
+            <Tabs value={tab} onValueChange={(v) => { setTab(v); cancelEdit(); }}>
+              <TabsList className="flex gap-5 overflow-x-auto rounded-none border-b border-border bg-transparent p-0 px-5">
+                {TABS.map((x) => (
+                  <TabsTrigger
+                    key={x}
+                    value={x}
+                    className="h-10 whitespace-nowrap rounded-none border-b-2 border-transparent bg-transparent px-0 text-[13px] font-medium text-muted-foreground shadow-none hover:text-foreground data-[state=active]:border-accent data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-accent data-[state=active]:shadow-none"
+                  >
+                    {x}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
 
             <div className="flex-1 overflow-y-auto p-5">
               <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground">
@@ -391,20 +391,19 @@ export default function Employees() {
               </span>
               {tab === "Profile" ? (
                 <div className="mt-3 space-y-2.5">
-                  {[
-                    ["Employee number", selected.id],
-                    ["Email address", `${selected.first.toLowerCase()}.${selected.last.toLowerCase()}@northstar.example`],
-                    ["Phone number", "+61 4 12 345 678"],
-                    ["Department", selected.dept],
-                    ["Manager", "Olivia Chen"],
-                    ["Emergency contact", "Jordan Mitchell · +61 4 98 765 432"],
-                    ["Location", `${selected.loc}, Australia`],
-                    ["Start date", selected.hire],
-                    ["Salary band", "Band 4 · $90k–$110k"],
-                  ].map(([label, value]) => (
+                  {profileRows(selected).map(([label, value]) => (
                     <div key={label} className="flex items-center justify-between gap-4 rounded-lg border border-border px-3.5 py-2.5">
-                      <span className="text-xs text-muted-foreground">{label}</span>
-                      <b className="text-right text-[13px] font-semibold">{value}</b>
+                      <span className="shrink-0 text-xs text-muted-foreground">{label}</span>
+                      {editing && draft ? (
+                        <Input
+                          value={draft[label] ?? ""}
+                          onChange={(e) => setDraft({ ...draft, [label]: e.target.value })}
+                          className="h-8 w-56 text-right text-[13px]"
+                          aria-label={label}
+                        />
+                      ) : (
+                        <b className="text-right text-[13px] font-semibold">{value}</b>
+                      )}
                     </div>
                   ))}
                   <div className="grid gap-2.5 pt-1">
@@ -424,9 +423,30 @@ export default function Employees() {
                 </div>
               )}
             </div>
-          </aside>
-        </>
-      )}
+
+            {editing && (
+              <div className="flex items-center justify-end gap-2.5 border-t border-border px-5 py-3.5">
+                <Button variant="ghost" onClick={cancelEdit}>Cancel</Button>
+                <Button className="bg-accent-70 font-bold hover:bg-accent-90" onClick={saveEdit}>
+                  Save changes
+                </Button>
+              </div>
+            )}
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+
+      <UnsavedChangesDialog
+        open={!!pendingLeave}
+        onCancel={() => setPendingLeave(null)}
+        onDiscard={() => {
+          const leave = pendingLeave;
+          setPendingLeave(null);
+          cancelEdit();
+          leave?.();
+        }}
+      />
     </>
   );
 }

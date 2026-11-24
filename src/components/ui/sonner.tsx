@@ -6,9 +6,6 @@ export function Toaster() {
       richColors
       toastOptions={{
         style: {
-          background: "var(--popover)",
-          color: "var(--popover-foreground)",
-          border: "1px solid var(--border)",
           borderRadius: "var(--radius-lg)",
           boxShadow: "var(--shadow-lg)",
         },

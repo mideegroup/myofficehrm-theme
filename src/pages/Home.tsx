@@ -3,7 +3,7 @@ import {
   Layers, ListPlus, Lock, Package, PlayCircle, Server, Settings2, Smartphone, Star, Users, Wallet, Workflow,
 } from "lucide-react";
 import { Section, SectionHead } from "../components/Layout";
-import { Button } from "../components/Button";
+import { Button } from "../components/ui/button";
 import { LogoFull } from "../components/Logo";
 import { GithubIcon } from "../components/Icons";
 import { DashboardMock } from "../components/DashboardMock";

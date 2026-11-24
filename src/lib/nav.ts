@@ -1,6 +1,6 @@
 import {
   Activity, ArrowRight, Building2, CalendarCheck, CalendarDays, CircleUserRound, Clock3,
-  CreditCard, FileText, LayoutDashboard, ShieldCheck, Users, Wallet,
+  CreditCard, FileText, FlaskConical, LayoutDashboard, ShieldCheck, Users, Wallet,
   type LucideIcon,
 } from "lucide-react";
 
@@ -8,6 +8,8 @@ export interface AppNavChild {
   label: string;
   to?: string;
   badge?: number;
+  /** Divider label in the module sidemenu (e.g. "PHASE-2"). */
+  section?: string;
 }
 
 export interface AppNavItem {
@@ -107,6 +109,24 @@ export const appNavGroups: AppNavGroup[] = [
           { label: "Session timeout", to: "/security/session-timeout" },
           { label: "Two-factor authentication", to: "/security/two-factor" },
           { label: "SSO", to: "/security/sso" },
+        ],
+      },
+      {
+        label: "Prototype",
+        icon: FlaskConical,
+        to: "/prototype",
+        children: [
+          { label: "Status pills", to: "/prototype/statuses" },
+          { label: "Overlays", to: "/prototype/overlays" },
+          { label: "Tabs & pagination", to: "/prototype/tabs" },
+          { label: "Toasts", to: "/prototype/toasts" },
+          { label: "Banners", to: "/prototype/banners" },
+          { label: "403 — Access restricted", to: "/prototype/403" },
+          { label: "404 — Not found", to: "/prototype/404" },
+          { label: "500 — Server error", to: "/prototype/500" },
+          { label: "Date picker", to: "/prototype/date-picker", section: "PHASE-2" },
+          { label: "File upload", to: "/prototype/file-upload", section: "PHASE-2" },
+          { label: "Multi-step form", to: "/prototype/multi-step", section: "PHASE-2" },
         ],
       },
       { label: "Workflows", icon: Activity },

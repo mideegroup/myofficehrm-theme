@@ -6,6 +6,9 @@ export interface ModuleNavItem {
   to: string;
   icon?: LucideIcon;
   badge?: number;
+  /** Optional divider label rendered above the item (e.g. "PHASE-2") —
+   *  starts a new section; consecutive items sharing it group together. */
+  section?: string;
 }
 
 /** Main content template — owns a module's section sub-navigation (the
@@ -36,10 +39,19 @@ export function ModuleLayout({
               onChange={(e) => navigate(e.target.value)}
               className="h-9 w-full rounded-lg border border-input bg-background px-2.5 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              {items.map((item) => (
+              {items.filter((i) => !i.section).map((item) => (
                 <option key={item.to + item.label} value={item.to}>
                   {item.label}
                 </option>
+              ))}
+              {[...new Set(items.filter((i) => i.section).map((i) => i.section!))].map((sec) => (
+                <optgroup key={sec} label={sec}>
+                  {items.filter((i) => i.section === sec).map((item) => (
+                    <option key={item.to + item.label} value={item.to}>
+                      {item.label}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </label>
@@ -52,9 +64,14 @@ export function ModuleLayout({
                 {title}
               </small>
             )}
-            {items.map((item) => (
+            {items.map((item, idx) => (
+              <div key={item.to + item.label}>
+                {item.section && (idx === 0 || items[idx - 1].section !== item.section) && (
+                  <small className="mb-1.5 mt-3 block border-t border-border/60 px-2.5 pt-3 text-[10px] font-bold tracking-[0.12em] text-muted-foreground">
+                    {item.section}
+                  </small>
+                )}
               <NavLink
-                key={item.to + item.label}
                 to={item.to}
                 className={({ isActive }) =>
                   `flex min-h-9 items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] font-medium leading-snug transition-colors ${
@@ -72,6 +89,7 @@ export function ModuleLayout({
                   </b>
                 )}
               </NavLink>
+              </div>
             ))}
           </nav>
         </>

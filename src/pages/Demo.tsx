@@ -5,7 +5,7 @@ import {
   Check, CheckCircle2, ChevronDown, ChevronLeft, Clock3, Eye, EyeOff, LayoutDashboard,
   MoreHorizontal, ShieldCheck, Sparkles, UserRound, Users, Wallet,
 } from "lucide-react";
-import { Button } from "../components/Button";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { LogoWordmark } from "../components/Logo";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../components/ui/dialog";

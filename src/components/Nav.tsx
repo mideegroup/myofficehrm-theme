@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, Star, X } from "lucide-react";
 import { LogoWordmark } from "./Logo";
-import { Button } from "./Button";
+import { Button } from "./ui/button";
 import { GithubIcon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
 

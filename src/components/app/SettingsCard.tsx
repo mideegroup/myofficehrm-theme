@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
-import { Button } from "../Button";
+import { ArrowRight, ShieldCheck } from "lucide-react";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
+import { toast } from "../ui/sonner";
+import { ConfirmDialog } from "./ConfirmDialog";
 import {
   INITIAL_PREFS, SETTING_DESCRIPTIONS, SETTING_NUMBER_KEYS, SETTING_SELECT_OPTIONS, SETTING_TOGGLE_KEYS,
 } from "../../lib/settingsMeta";
@@ -28,11 +30,12 @@ export function SettingsCard({
   children?: React.ReactNode;
 }) {
   const [prefs, setPrefs] = useState<Record<string, string>>(INITIAL_PREFS);
-  const [saved, setSaved] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   const setValue = (key: string, val: string) => {
     setPrefs((c) => ({ ...c, [key]: val }));
-    setSaved(false);
   };
+
+  const save = () => toast.success("Changes saved", { description: `${title} preferences updated.` });
 
   return (
     <section className="rounded-xl border border-border bg-card shadow-sm">
@@ -96,23 +99,23 @@ export function SettingsCard({
         {children}
       </div>
 
-      <div className="flex items-center justify-between gap-4 border-t border-border p-5">
-        <div>
-          {saved && (
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-accent">
-              <CheckCircle2 size={16} /> Changes saved
-            </span>
-          )}
-        </div>
-        <div className="flex gap-2.5">
-          <Button variant="secondary" onClick={() => { setPrefs(INITIAL_PREFS); setSaved(false); }}>
-            Reset
-          </Button>
-          <Button className="bg-accent-70 font-bold hover:bg-accent-90" onClick={() => setSaved(true)}>
-            Save changes <ArrowRight size={15} />
-          </Button>
-        </div>
+      <div className="flex items-center justify-end gap-2.5 border-t border-border p-5">
+        <Button variant="secondary" onClick={() => setConfirmReset(true)}>
+          Reset
+        </Button>
+        <Button className="bg-accent-70 font-bold hover:bg-accent-90" onClick={save}>
+          Save changes <ArrowRight size={15} />
+        </Button>
       </div>
+
+      <ConfirmDialog
+        open={confirmReset}
+        onOpenChange={setConfirmReset}
+        title={`Reset ${title.toLowerCase()}?`}
+        description="All values on this page return to their defaults. This can't be undone."
+        confirmLabel="Reset"
+        onConfirm={() => { setPrefs(INITIAL_PREFS); toast.success("Settings reset to defaults"); }}
+      />
     </section>
   );
 }

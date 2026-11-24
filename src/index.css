@@ -28,6 +28,18 @@
   --warning: #B48442;
   --warning-foreground: #272E2F;
 
+  /* Enumerated status tones (spec 17) — semantic, scheme-independent: a
+     tenant's accent must never repaint status signals. Soft surface +
+     strong foreground pairs; use via bg-status-* / text-status-*-foreground. */
+  --status-success: #D6F2E1;
+  --status-success-foreground: #1E7046;
+  --status-warning: #FBEED3;
+  --status-warning-foreground: #8A5E1E;
+  --status-info: #DCEEF7;
+  --status-info-foreground: #256A94;
+  --status-danger: #F8DCD8;
+  --status-danger-foreground: #A03B30;
+
   --radius: 0.5rem;
   --shadow-sm: 0 1px 2px 0 color-mix(in oklab, var(--primary) 8%, transparent);
   --shadow-md: 0 4px 12px -2px color-mix(in oklab, var(--primary) 10%, transparent);
@@ -54,6 +66,15 @@
   --warning: #DFBE87;
   --warning-foreground: #10181A;
 
+  --status-success: #123B2A;
+  --status-success-foreground: #7BCFA0;
+  --status-warning: #453015;
+  --status-warning-foreground: #E5C07B;
+  --status-info: #16364A;
+  --status-info-foreground: #8CC4E4;
+  --status-danger: #4A2420;
+  --status-danger-foreground: #E69A8E;
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5);
   --shadow-lg: 0 12px 32px -8px rgb(0 0 0 / 0.6);
@@ -78,6 +99,14 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-status-success: var(--status-success);
+  --color-status-success-foreground: var(--status-success-foreground);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-foreground: var(--status-warning-foreground);
+  --color-status-info: var(--status-info);
+  --color-status-info-foreground: var(--status-info-foreground);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-foreground: var(--status-danger-foreground);
   --color-ring: var(--ring);
   --color-background: var(--background);
   --color-foreground: var(--foreground);

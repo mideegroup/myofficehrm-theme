@@ -1,15 +1,17 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowRight, Check, Eye, EyeOff, LockKeyhole, MoreHorizontal, UserRound, X,
+  ArrowLeft, ArrowRight, Check, Eye, EyeOff, LockKeyhole, MoreHorizontal, ShieldCheck, UserRound, X,
 } from "lucide-react";
-import { Button } from "../components/Button";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { LogoWordmark } from "../components/Logo";
 import { BRAND_PANEL_BG, BRAND_PANEL_DOTS } from "../lib/brand";
 
 const DEMO_EMAIL = "demo@myofficehrm.com";
 const DEMO_PASSWORD = "demouser";
+const DEMO_MFA_CODE = "123456";
+const CHALLENGE_TTL_SECONDS = 300;
 
 const FEATURES = [
   "Employee Management",
@@ -108,13 +110,142 @@ function MicrosoftMark() {
   );
 }
 
+function MfaChallenge({ email, onBack }: { email: string; onBack: () => void }) {
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  // What expires is the sign-in CHALLENGE (the mfa_challenge session), not the
+  // code — authenticator apps generate a fresh code every 30s and nothing is
+  // "sent". On expiry the api answers UNAUTHENTICATED and the UX resets to
+  // the credentials step, so the design's expired state leads back.
+  const [secondsLeft, setSecondsLeft] = useState(CHALLENGE_TTL_SECONDS);
+  const navigate = useNavigate();
+  const expired = secondsLeft <= 0;
+
+  useEffect(() => {
+    const t = window.setInterval(() => setSecondsLeft((s) => Math.max(0, s - 1)), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+
+  const verify = (e: FormEvent) => {
+    e.preventDefault();
+    if (loading || expired) return;
+    setError("");
+    setLoading(true);
+    window.setTimeout(() => {
+      setLoading(false);
+      if (code === DEMO_MFA_CODE) navigate("/dashboard");
+      else setError("Incorrect code — check your authenticator app and try again.");
+    }, 600);
+  };
+
+  const mm = Math.floor(secondsLeft / 60);
+  const ss = String(secondsLeft % 60).padStart(2, "0");
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onBack}
+        className="mb-6 inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft size={14} /> Use a different account
+      </button>
+      <span className="flex items-center gap-2 text-[11px] font-bold tracking-[0.1em] text-accent">
+        <i className="size-1.5 rounded-full bg-accent" />
+        SECURE SIGN-IN
+      </span>
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight">Two-factor verification</h2>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Enter the 6-digit code from your authenticator app for <b className="font-medium text-foreground">{email}</b>.
+      </p>
+
+      {expired ? (
+        <div className="mt-8 space-y-5">
+          <div role="alert" className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3.5 py-2.5 text-sm text-destructive">
+            <X size={15} className="shrink-0" />
+            This sign-in session expired — start again.
+          </div>
+          <Button
+            variant="primary"
+            onClick={onBack}
+            className="h-12 w-full gap-3 bg-accent-70 font-bold hover:bg-accent-90"
+          >
+            <ArrowLeft size={16} /> Back to sign-in
+          </Button>
+        </div>
+      ) : (
+        <form onSubmit={verify} className="mt-8 space-y-5">
+          <label className="block text-sm font-medium">
+            Verification code
+            <span className="relative mt-2 block">
+              <ShieldCheck size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="mfa-code"
+                autoFocus
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                maxLength={6}
+                required
+                placeholder="••••••"
+                value={code}
+                onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+                className="h-14 pl-10 font-mono text-xl tracking-[0.5em]"
+              />
+            </span>
+          </label>
+
+          {error && (
+            <div role="alert" className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3.5 py-2.5 text-sm text-destructive">
+              <X size={15} className="shrink-0" />
+              {error}
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={loading || code.length !== 6}
+            className="h-12 w-full gap-3 bg-accent-70 font-bold hover:bg-accent-90"
+          >
+            {loading ? (
+              <>
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                Verifying…
+              </>
+            ) : (
+              <>
+                Verify <ArrowRight size={17} />
+              </>
+            )}
+          </Button>
+
+          <p className="text-center text-sm text-muted-foreground">
+            This sign-in expires in{" "}
+            <b className="font-medium tabular-nums text-foreground">{mm}:{ss}</b>
+          </p>
+        </form>
+      )}
+
+      <div className="mt-8 rounded-xl border border-border bg-muted/40 p-4 text-sm">
+        <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground">
+          DEMO ACCESS
+        </span>
+        <p className="mt-2.5 flex justify-between text-muted-foreground">
+          MFA code <b className="font-medium text-foreground">{DEMO_MFA_CODE}</b>
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function Login() {
+  const [step, setStep] = useState<"credentials" | "mfa">("credentials");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -124,7 +255,7 @@ export default function Login() {
     window.setTimeout(() => {
       setLoading(false);
       if (email.trim().toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
-        navigate("/dashboard");
+        setStep("mfa");
       } else {
         setError("Incorrect email or password.");
       }
@@ -137,6 +268,10 @@ export default function Login() {
 
       <section className="flex items-center justify-center bg-background px-6 py-10">
         <div className="w-full max-w-[400px]">
+          {step === "mfa" ? (
+            <MfaChallenge email={email} onBack={() => { setStep("credentials"); setError(""); }} />
+          ) : (
+          <>
           <div>
             <span className="flex items-center gap-2 text-[11px] font-bold tracking-[0.1em] text-accent">
               <i className="size-1.5 rounded-full bg-accent" />
@@ -272,6 +407,8 @@ export default function Login() {
               Password <b className="font-medium text-foreground">{DEMO_PASSWORD}</b>
             </p>
           </div>
+          </>
+          )}
 
           <div className="mt-10 flex items-center justify-between text-[11px] text-muted-foreground">
             <span>© 2026 myOfficeHRM</span>
