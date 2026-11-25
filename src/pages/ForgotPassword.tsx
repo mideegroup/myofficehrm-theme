@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { usePinLight } from "../lib/usePinLight";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, Mail } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -9,6 +10,7 @@ import { Field } from "../components/ui/field";
  *  The link expiry/one-time semantics are server-side; the prototype shows
  *  the two states and the copy. */
 export default function ForgotPassword() {
+  usePinLight();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);

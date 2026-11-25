@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { usePinLight } from "../lib/usePinLight";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, Check, Eye, EyeOff, LockKeyhole, MoreHorizontal, ShieldCheck, UserRound, X,
@@ -241,6 +242,7 @@ function MfaChallenge({ email, onBack }: { email: string; onBack: () => void }) 
 }
 
 export default function Login() {
+  usePinLight();
   const [step, setStep] = useState<"credentials" | "mfa">("credentials");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
