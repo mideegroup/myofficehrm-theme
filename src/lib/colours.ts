@@ -60,6 +60,16 @@ const SCHEME_KEY = "scheme";
  * overrides would beat `.dark` forever and break dark-mode re-theming.
  *
  * Persists to localStorage; `initScheme` restores it pre-paint.
+ *
+ * PORT CONTRACT: localStorage is a flash-prevention CACHE, not the source
+ * of truth — the tenant's scheme lives in the DB. How the DB value is
+ * resolved depends on the deployment:
+ *  - Self-hosted: the install serves one tenant, so fetch the scheme on
+ *    init (empty cache or not) and call `applyScheme` — branded on cold
+ *    load, including the login page.
+ *  - SaaS: the tenant can't be resolved before sign-in, so auth pages
+ *    show `default` on a cold load. After sign-in the auth/me payload
+ *    carries the scheme → `applyScheme` rewrites the cache.
  */
 export function applyScheme(scheme: ColorScheme, el = document.documentElement) {
   if (scheme === DEFAULT_SCHEME) el.removeAttribute("data-scheme");
